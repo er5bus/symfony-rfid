@@ -1,0 +1,102 @@
+{% extends 'admin_layout.html.twig' %}
+
+{% block title %}{{ 'User index'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="row align-items-center py-4">
+        <div class="col-lg-6 col-7">
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                    <li class="breadcrumb-item"><a href="#"><i class="fas fa-book-reader"></i></a></li>
+                    <li class="breadcrumb-item"><a href="#">{{ 'Users'|trans }}</a></li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-lg-6 col-5 text-right">
+            <a href="{{ path('user_new') }}" class="btn btn-sm btn-neutral"><i class="fas fa-plus-circle"></i> {{ 'Create new User'|trans }}</a>
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header border-2">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="mb-0">{{ 'User'|trans }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <form action="{{ path('user_index') }}" method="get">
+                    <div class="col-4 pt-4 float-right">
+                        <div class="form-group">
+                            <div class="input-group mb-4">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
+                                </div>
+                                <input class="form-control" name="search" placeholder="{{ 'Search'|trans }}"
+                                       type="text" value="{{ app.request.get('search', null) }}">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Projects table -->
+                <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">{{ knp_pagination_sortable(users, 'User'|trans, 'u.firstName') }}</th>
+                        <th scope="col">{{ knp_pagination_sortable(users, 'Username'|trans, 'u.username') }}</th>
+                        <th scope="col">{{ knp_pagination_sortable(users, 'Email'|trans, 'u.email') }}</th>
+                        <th scope="col">{{ knp_pagination_sortable(users, 'Last Login'|trans, 'u.lastLogin') }}</th>
+                        <th scope="col">actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>
+                                <div class="media align-items-center">
+                                    <a href="#" class="avatar rounded-circle mr-3">
+                                        <img alt="Image placeholder"
+                                             src="{{ asset('assets/img/icons/account.svg') }}">
+                                    </a>
+                                    <div class="media-body">
+                                        <span class="mb-0 text-sm">{{ user.firstName }}</span>
+                                        <p class="mb-0 text-sm">{{ user.lastName }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.lastLogin ? user.lastLogin|date('Y-m-d H:i:s') : '--' }}</td>
+                            <td>
+                                <a class="btn btn-sm btn-icon-only btn-2 btn-primary" role="button" href="{{ path('user_show', {'id': user.id}) }}">
+                                    <span class="btn-inner--icon"><i class="far fa-eye"></i></span>
+                                </a>
+                                <a class="btn btn-sm btn-icon-only btn-2 btn-primary" role="button" href="{{ path('user_edit', {'id': user.id}) }}">
+                                    <span class="btn-inner--icon"><i class="far fa-edit"></i></span>
+                                </a>
+                                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                                <a class="btn btn-sm btn-icon-only btn-2 btn-primary" role="button" href="{{ path('book_shop', {'_switch_user': user.username}) }}">
+                                    <span class="btn-inner--icon"><i class="fas fa-user-graduate"></i></span>
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="10" class="text-center">{{ 'No records found'|trans }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="float-right" aria-label="Page navigation example ">
+                {{ knp_pagination_render(users) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -6,25 +6,21 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReservationRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Reservation
 {
+    const IN_PENDING = 'in pending';
+    const FULLY_ACCEPTED = 'fully accepted';
+    const PARTIALLY_ACCEPTED = 'partially accepted';
+    const REFUSED = 'refused';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $borrowingDate;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $borrowingQuantity;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -37,7 +33,22 @@ class Reservation
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $startBorrowingDate;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $endBorrowingDate;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $borrowingQuantity;
+
+    /**
+     * @ORM\Column(name="book_status", type="string", length=255, nullable=true)
      */
     private $status;
 
@@ -47,6 +58,7 @@ class Reservation
     private $requestedQuantity;
 
     /**
+     * @var Book
      * @ORM\ManyToOne(targetEntity="App\Entity\Book", inversedBy="reservations")
      */
     private $book;
@@ -59,18 +71,6 @@ class Reservation
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getBorrowingDate(): ?\DateTimeInterface
-    {
-        return $this->borrowingDate;
-    }
-
-    public function setBorrowingDate(?\DateTimeInterface $borrowingDate): self
-    {
-        $this->borrowingDate = $borrowingDate;
-
-        return $this;
     }
 
     public function getBorrowingQuantity(): ?int
@@ -154,6 +154,42 @@ class Reservation
     {
         $this->user = $user;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStartBorrowingDate()
+    {
+        return $this->startBorrowingDate;
+    }
+
+    /**
+     * @param mixed $startBorrowingDate
+     * @return Reservation
+     */
+    public function setStartBorrowingDate($startBorrowingDate)
+    {
+        $this->startBorrowingDate = $startBorrowingDate;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEndBorrowingDate()
+    {
+        return $this->endBorrowingDate;
+    }
+
+    /**
+     * @param mixed $endBorrowingDate
+     * @return Reservation
+     */
+    public function setEndBorrowingDate($endBorrowingDate)
+    {
+        $this->endBorrowingDate = $endBorrowingDate;
         return $this;
     }
 }

@@ -1,4 +1,10 @@
 {{ form_start(form) }}
+<div class="card-body">
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+</div>
+<div class="card-footer">
+    <button class="btn btn-primary" type="submit">
+        <i class="fas fa-check"></i> {{ 'Save'|trans }}
+    </button>
+</div>
 {{ form_end(form) }}

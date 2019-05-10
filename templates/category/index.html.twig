@@ -1,37 +1,82 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin_layout.html.twig' %}
 
-{% block title %}Category index{% endblock %}
+{% block title %}{{ 'Category index'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Category index</h1>
+    <div class="row align-items-center py-4">
+        <div class="col-lg-6 col-7">
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                    <li class="breadcrumb-item"><a href="#"><i class="fas fa-book-reader"></i></a></li>
+                    <li class="breadcrumb-item"><a href="#">{{ 'Categories'|trans }}</a></li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-lg-6 col-5 text-right">
+            <a href="{{ path('category_new') }}" class="btn btn-sm btn-neutral"><i class="fas fa-plus-circle"></i> {{ 'Create New Category'|trans }}</a>
+        </div>
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Code</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for category in categories %}
-            <tr>
-                <td>{{ category.id }}</td>
-                <td>{{ category.title }}</td>
-                <td>{{ category.code }}</td>
-                <td>
-                    <a href="{{ path('category_show', {'id': category.id}) }}">show</a>
-                    <a href="{{ path('category_edit', {'id': category.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="card shadow">
+        <div class="card-header border-2">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="mb-0">{{ 'Categories'|trans }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <form action="{{ path('category_index') }}" method="get">
+                    <div class="col-4 pt-4 float-right">
+                        <div class="form-group">
+                            <div class="input-group mb-4">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
+                                </div>
+                                <input class="form-control" name="search" placeholder="{{ 'Search'|trans }}"
+                                       type="text" value="{{ app.request.get('search', null) }}">
+                            </div>
+                        </div>
+                    </div>
+                </form>
 
-    <a href="{{ path('category_new') }}">Create new</a>
+                <!-- Projects table -->
+                <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">{{ knp_pagination_sortable(categories, 'Title'|trans, 'c.title') }}</th>
+                        <th scope="col">{{ knp_pagination_sortable(categories, 'Code'|trans, 'c.code') }}</th>
+                        <th scope="col">actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for category in categories %}
+                        <tr>
+                            <td>{{ category.title }}</td>
+                            <td>{{ category.code }}</td>
+                            <td>
+                                <a class="btn btn-sm btn-icon-only btn-2 btn-primary" role="button" href="{{ path('category_show', {'id': category.id}) }}">
+                                    <span class="btn-inner--icon"><i class="far fa-eye"></i></span>
+                                </a>
+                                <a class="btn btn-sm btn-icon-only btn-2 btn-primary" role="button" href="{{ path('category_edit', {'id': category.id}) }}">
+                                    <span class="btn-inner--icon"><i class="far fa-edit"></i></span>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center">{{ 'No records found'|trans }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="float-right" aria-label="Page navigation example ">
+                {{ knp_pagination_render(categories) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -8,8 +8,10 @@ use Doctrine\Common\Collections\Collection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
+use DateTimeInterface;
+
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="fos_user")
  */
 class User extends BaseUser
@@ -22,17 +24,17 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="date", nullable=true)
      */
     private $birthday;
 
@@ -42,7 +44,7 @@ class User extends BaseUser
     private $address;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=30, nullable=true)
      */
     private $phoneNumber;
 
@@ -82,12 +84,12 @@ class User extends BaseUser
         return $this;
     }
 
-    public function getBirthday(): ?string
+    public function getBirthday(): ?DateTimeInterface
     {
         return $this->birthday;
     }
 
-    public function setBirthday(?string $birthday): self
+    public function setBirthday(?DateTimeInterface $birthday): self
     {
         $this->birthday = $birthday;
 
@@ -147,5 +149,12 @@ class User extends BaseUser
         }
 
         return $this;
+    }
+
+    public function getFullName(){
+        if (!is_null($this->firstName) || !is_null($this->lastName)){
+            return sprintf('%s %s', $this->firstName ?? $this->username, $this->lastName);
+        }
+        return $this->username;
     }
 }

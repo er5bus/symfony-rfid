@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title_page %}Authentication{% endblock %}</title>
+    <!-- Favicon -->
+    <link href="{{ asset('assets/img/brand/favicon.png') }}" rel="icon" type="image/png">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <!-- Icons -->
+    <link href="{{ asset('assets/vendor/nucleo/css/nucleo.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+    <!-- Argon CSS -->
+    <link type="text/css" href="{{ asset('assets/css/argon.min.css') }}" rel="stylesheet">
+</head>
+
+<body class="bg-default">
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKDMSK6" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div class="main-content">
+
+    <!-- Header -->
+    <div class="header bg-gradient-primary py-7 py-lg-8">
+        <div class="container">
+            <div class="header-body text-center">
+                <div class="row justify-content-center">
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        <div class="col-lg-5 col-md-6 pb-5 text-white">
+                            {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                            <a class="text-white" href="{{ path('fos_user_security_logout') }}">
+                                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+    <div class="container mt--8 pb-5">
+        {% if app.request.hasPreviousSession %}
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="flash-{{ type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+        {% block fos_user_content %}{% endblock %}
+    </div>
+</div>
+<!-- Argon Scripts -->
+<!-- Core -->
+<script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+<!-- Argon JS -->
+<script src="{{ asset('assets/js/argon.min.js') }}"></script>
+</body>
+
+</html>

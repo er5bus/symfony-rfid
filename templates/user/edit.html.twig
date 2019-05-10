@@ -1,0 +1,31 @@
+{% extends 'admin_layout.html.twig' %}
+
+{% block title %}{{ 'Edit User'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="row align-items-center py-4">
+        <div class="col-lg-6 col-7">
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                    <li class="breadcrumb-item"><a href="#"><i class="fas fa-user-plus"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ path('user_index') }}">{{ 'Users'|trans }}</a></li>
+                    <li class="breadcrumb-item active"><a href="#">{{ 'Edit User'|trans }}</a></li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-lg-6 col-5 text-right">
+            <a href="{{ path('user_index') }}" class="btn btn-sm btn-neutral"><i class="fas fa-home"></i> {{ 'Back to list'|trans }}</a>
+        </div>
+    </div>
+
+    <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-1">
+            <div class="row align-items-center">
+                <div class="col-8">
+                    <h3 class="mb-0">{{ 'Edit User'|trans }}</h3>
+                </div>
+            </div>
+        </div>
+        {{ include('user/_form.html.twig') }}
+    </div>
+{% endblock %}

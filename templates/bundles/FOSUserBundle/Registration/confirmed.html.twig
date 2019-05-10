@@ -1,0 +1,28 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block title_page %}{{ 'Create new account ?'|trans }}{% endblock %}
+
+{% block fos_user_content %}
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-10">
+            <div class="card bg-secondary shadow border-2">
+                <div class="card-header border-2">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h3 class="mb-0 text-center">{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body px-lg-5 py-lg-5">
+                    <img class="confirm-img img-center" src="{{ asset('assets/img/icons/handshake.svg') }}">
+                    <div class=" text-center">
+                        <a class="btn btn-primary" href="{{ path('book_shop') }}">{{ 'Go to home page'|trans({}) }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock fos_user_content %}

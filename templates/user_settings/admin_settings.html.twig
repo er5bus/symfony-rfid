@@ -1,0 +1,93 @@
+{% extends 'admin_layout.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+            <div class="card bg-secondary shadow">
+                {{ form_start(change_password_form) }}
+                <div class="card-header bg-white border-2">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">{{ 'Change Your Password'|trans }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="pt-2">
+                        {{ form_widget(change_password_form) }}
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-check"></i> {{ 'change_password.submit'|trans({}, 'FOSUserBundle') }}
+                    </button>
+                </div>
+                {{ form_end(change_password_form) }}
+            </div>
+        </div>
+        <div class="col-xl-8 order-xl-1">
+            <div class="card bg-secondary shadow">
+                {{ form_start(profile_form) }}
+                <div class="card-header bg-white border-2">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">{{ 'Update my Account'|trans }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h6 class="heading-small text-muted mb-4">{{ 'User information'|trans }}</h6>
+                    <div class="pl-lg-4">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                {{ form_row(profile_form.username) }}
+                            </div>
+                            <div class="col-lg-6">
+                                {{ form_row(profile_form.email) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                {{ form_row(profile_form.firstName) }}
+                            </div>
+                            <div class="col-lg-6">
+                                {{ form_row(profile_form.lastName) }}
+                            </div>
+                            <div class="col-lg-12">
+                                {{ form_row(profile_form.birthday) }}
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-4"/>
+                    <!-- Address -->
+                    <h6 class="heading-small text-muted mb-4">{{ 'Contact information'|trans }}</h6>
+                    <div class="pl-lg-4">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                {{ form_row(profile_form.phoneNumber) }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form_row(profile_form.address) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4"/>
+                    <div class="pl-lg-4">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                {{ form_row(profile_form.current_password) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-check"></i> {{ 'profile.edit.submit'|trans({}, 'FOSUserBundle') }}
+                    </button>
+                </div>
+                {{ form_end(profile_form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-10">
+        <div class="card bg-secondary shadow border-2">
+            <div class="card-header border-2">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="mb-0 text-center">{{ 'resetting.request.submit'|trans }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body px-lg-5 py-lg-5 pb-4">
+                {{ form_start(form, { 'action': path('fos_user_resetting_reset', {'token': token}), 'attr': { 'class': 'fos_user_resetting_reset' } }) }}
+                {{ form_widget(form) }}
+                <div class="text-center">
+                    <button class="btn btn-primary" type="submit"><i class="fas fa-check"></i> {{ 'resetting.request.submit'|trans }}</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Reservation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,32 +20,55 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
-    // /**
-    //  * @return Reservation[] Returns an array of Reservation objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getFindAllQuery($search)
     {
         return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+            ->join('r.book', 'book')
+            ->getQuery();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Reservation
+    public function getFindByUserQuery($userId)
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $qb = $this->createQueryBuilder('r');
+        $this->joinUser($userId, $qb);
+        return $qb->getQuery();
     }
-    */
+
+    public function countAllReservations()
+    {
+        return $this->createQueryBuilder('b')
+            ->select('count(b.id) as total')
+            ->getQuery()
+            ->getSingleResult();
+    }
+
+    public function reservationStats()
+    {
+        return $this->createQueryBuilder('b')
+            ->select('count(b.id) as total')
+            ->groupBy()
+            ->getQuery()
+            ->getSingleResult();
+    }
+
+    public function getUserReservationGroupedByStatus($userId)
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->select('SUM(r.borrowingQuantity) as reservedBooks', 'r.status as status')
+            ->groupBy('status');
+
+        $this->joinUser($userId, $qb);
+
+        return $qb
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function joinUser($userId, QueryBuilder $qb)
+    {
+        $qb
+            ->join('r.user', 'user')
+            ->where('user.id = :user_id')
+            ->setParameter('user_id', $userId);
+    }
 }

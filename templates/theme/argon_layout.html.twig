@@ -1,0 +1,66 @@
+{% use "bootstrap_4_layout.html.twig" %}
+
+{# Widgets #}
+
+{% block form_start %}
+    {%- set attr = attr|merge({novalidate: 'novalidate'}) -%}
+    {{- parent() -}}
+{% endblock form_start %}
+
+{% block vich_image_widget %}
+    {% spaceless %}
+        <div class="custom-file mt-3 mb-3">
+            {{ form_widget(form.file) }}
+
+            <label class="custom-file-label selected" for="customFile">{{ value.file.originalName|default(download_uri)|default('No file selected'|trans) }}</label>
+            {% if download_uri is defined and download_uri %}
+                <a href="{{ download_uri }}" class="btn btn-sm btn-neutral mt-2 mb-2"><i class="far fa-trash-alt"></i>{{ 'download'|trans({}, 'VichUploaderBundle') }}</a>
+            {% endif %}
+
+            {% if form.delete is defined %}
+                {{ form_row(form.delete) }}
+            {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block form_widget_simple %}
+    {% if type is not defined or type != 'hidden' %}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control form-control-alternative')|trim}) -%}
+    {% endif %}
+
+    {% if type is defined and (type == 'file') %}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' custom-file-input')|trim}) -%}
+    {% endif %}
+
+    {{- parent() -}}
+{% endblock form_widget_simple %}
+
+{% block textarea_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-control form-control-alternative')|trim}) %}
+    {{- parent() -}}
+{%- endblock textarea_widget %}
+
+{# Labels #}
+
+{% block form_label -%}
+    {% if label is not same as(false) -%}
+        {%- if compound is defined and compound -%}
+            {%- set element = 'legend' -%}
+            {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' col-form-label')|trim}) -%}
+        {%- else -%}
+            {%- set label_attr = label_attr|merge({for: id, class: (label_attr.class|default('') ~ ' form-control-label')|trim}) -%}
+        {%- endif -%}
+    {%- endif -%}
+
+    {{- parent() -}}
+{%- endblock form_label %}
+
+{% block checkbox_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' custom-control-input')|trim}) %}
+    <div class="custom-control custom-control-alternative custom-checkbox">
+        <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %} {% if checked %} checked="checked"{% endif %}/>
+        <label class="custom-control-label" for="{{ id }}">{{- label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) -}}</label>
+    </div>
+{%- endblock checkbox_widget %}
+

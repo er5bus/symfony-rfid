@@ -1,30 +1,65 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin_layout.html.twig' %}
 
-{% block title %}Category{% endblock %}
+{% block title %}{{ 'Category'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Category</h1>
+    <div class="row align-items-center py-4">
+        <div class="col-lg-6 col-7">
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                    <li class="breadcrumb-item"><a href="#"><i class="fas fa-book-reader"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ path('category_index') }}">{{ 'Categories'|trans }}</a></li>
+                    <li class="breadcrumb-item active"><a href="#">{{ 'Edit Category'|trans }}</a></li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-lg-6 col-5 text-right">
+            {{ include('category/_delete_form.html.twig') }}
+            <a href="{{ path('category_index') }}" class="btn btn-sm btn-neutral"><i class="fas fa-home"></i> {{ 'Back to list'|trans }}</a>
+        </div>
+    </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ category.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ category.title }}</td>
-            </tr>
-            <tr>
-                <th>Code</th>
-                <td>{{ category.code }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('category_index') }}">back to list</a>
-
-    <a href="{{ path('category_edit', {'id': category.id}) }}">edit</a>
-
-    {{ include('category/_delete_form.html.twig') }}
+    <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+            <div class="row align-items-center">
+                <div class="col-8">
+                    <h3 class="mb-0">{{ 'Category'|trans }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-6">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <i class="ni ni-book-bookmark"></i>
+                        </div>
+                        <div class="col ml--2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h4 class="mb-0 text-sm">{{ 'Title'|trans }}</h4>
+                                </div>
+                            </div>
+                            <p class="text-sm mb-0">{{ category.title }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <i class="ni ni-support-16"></i>
+                        </div>
+                        <div class="col ml--2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h4 class="mb-0 text-sm">{{ 'Code'|trans }}</h4>
+                                </div>
+                            </div>
+                            <p class="text-sm mb-0">{{ category.code|default('---') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -2,7 +2,7 @@
 'use strict';
 
 var packageName = 'gromo:jquery.scrollbar'; // https://atmospherejs.com/mediatainment/switchery
-var where = 'client'; // where to install: 'client' or 'server'. For both, pass nothing.
+var where = 'user'; // where to install: 'user' or 'server'. For both, pass nothing.
 
 Package.describe({
     name: packageName,

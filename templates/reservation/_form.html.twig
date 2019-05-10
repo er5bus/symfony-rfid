@@ -1,0 +1,38 @@
+{{ form_start(form) }}
+<div class="card-body">
+    <div class="input-daterange datepicker row align-items-center">
+        <div class="col">
+            {{ form_row(form.startBorrowingDate) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.endBorrowingDate) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.requestedQuantity) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.borrowingQuantity) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.book) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.user) }}
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_rest(form) }}
+</div>
+<div class="card-footer">
+    <button class="btn btn-primary" type="submit">
+        <i class="fas fa-check"></i> {{ 'Save'|trans }}
+    </button>
+</div>
+{{ form_end(form) }}

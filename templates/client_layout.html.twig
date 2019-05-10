@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
+    <meta name="author" content="Creative Tim">
+    <title>{% block title %}Dashboard{% endblock %}</title>
+    {% block stylesheets %}
+        <link href="{{ asset('assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+        <!-- Favicon -->
+        <link href="{{ asset('assets/img/brand/favicon.png') }}" rel="icon" type="image/png">
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+        <!-- Icons -->
+        <link href="{{ asset('assets/vendor/nucleo/css/nucleo.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+        <!-- Argon CSS -->
+        <link type="text/css" href="{{ asset('assets/css/argon.css') }}" rel="stylesheet">
+    {% endblock %}
+</head>
+
+<body class="bg-default">
+
+<div class="main-content">
+    <!-- Navbar -->
+    <nav class="navbar navbar-top navbar-horizontal navbar-expand-md navbar-dark">
+
+        <div class="container px-4">
+            <a class="navbar-brand" href="{{ path('book_shop') }}">
+                <img src="{{ asset('assets/img/brand/white.png') }}" />
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse-main" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbar-collapse-main">
+                <!-- Collapse header -->
+                <div class="navbar-collapse-header d-md-none">
+                    <div class="row">
+                        <div class="col-6 collapse-brand">
+                            <a class="navbar-brand" href="#">
+                                <img src="{{ asset('assets/img/brand/white.png') }}" />
+                            </a>
+                        </div>
+                        <div class="col-6 collapse-close">
+                            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle sidenav">
+                                <span></span>
+                                <span></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <form action="{{ path('book_shop') }}" method="get" class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+                    <div class="form-group mb-0">
+                        <div class="input-group input-group-alternative">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            </div>
+                            <label>
+                                <input name="search" autocomplete="off" class="form-control" placeholder="Search" value="{{ app.request.get('search', null) }}" type="text">
+                            </label>
+                        </div>
+                    </div>
+                </form>
+                <!-- Navbar items -->
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-icon" href="{{ path('user_reservation') }}">
+                            <i class="ni ni-books"></i>
+                            <span class="nav-link-inner--text">{{ 'Reservations'|trans }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link nav-link-icon nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false">
+                            <i class="ni ni-circle-08"></i>
+                            <span class="nav-link-inner--text">{{ app.user.fullName }}</span>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
+                            <a href="{{ path('client_profile') }}" class="dropdown-item">
+                                <i class="ni ni-single-02"></i>
+                                <span>{{ 'My profile'|trans }}</span>
+                            </a>
+                            <a href="{{ path('client_settings') }}" class="dropdown-item">
+                                <i class="ni ni-settings-gear-65"></i>
+                                <span>{{ 'Settings'|trans }}</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="{{ path('fos_user_security_logout') }}" class="dropdown-item">
+                                <i class="ni ni-user-run"></i>
+                                <span>{{ 'Logout'|trans }}</span>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Header -->
+    <div class="header bg-gradient-primary py-7 py-lg-8">
+        <div class="separator separator-bottom separator-skew zindex-100">
+            <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+            </svg>
+        </div>
+    </div>
+    <!-- Page content -->
+    <div class="container mt--100 pb-5 pt-5">
+        {% block body %}{% endblock %}
+    </div>
+</div>
+{% block javascripts %}
+    <!-- Argon Scripts -->
+    <!-- Core -->
+    <script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+
+    <!-- Optional JS -->
+    <script src="{{ asset('assets/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+
+    <!-- Argon JS -->
+    <script src="{{ asset('assets/js/argon.min.js') }}"></script>
+{% endblock %}
+</body>
+</html>

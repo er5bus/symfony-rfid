@@ -1,0 +1,9 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block title_page %}{{ 'Create new account ?'|trans }}{% endblock %}
+
+{% block fos_user_content %}
+    <p>{{ 'registration.check_email'|trans({'%email%': user.email}) }}</p>
+{% endblock fos_user_content %}

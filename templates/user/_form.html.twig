@@ -1,0 +1,54 @@
+{{ form_start(form) }}
+<div class="card-body">
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.firstName) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.lastName) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.birthday) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.phoneNumber) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_row(form.address) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.username) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.email) }}
+        </div>
+    </div>
+
+    <div class="row">
+        {% for password in form.plainPassword %}
+        <div class="col-md-6">
+            {{ form_row(password) }}
+        </div>
+        {% endfor %}
+    </div>
+    {{ form_row(form.enabled) }}
+    {{ form_row(form.roles) }}
+
+    {{ form_widget(form) }}
+</div>
+<div class="card-footer">
+    <button class="btn btn-primary" type="submit">
+        <i class="fas fa-check"></i> {{ 'Save'|trans }}
+    </button>
+</div>
+{{ form_end(form) }}

@@ -1,50 +1,165 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin_layout.html.twig' %}
 
-{% block title %}Book{% endblock %}
+{% block title %}{{ 'Book'|trans }}{% endblock %}
 
 {% block body %}
-    <div class="card bg-secondary shadow">
+    <div class="row align-items-center py-4">
+        <div class="col-lg-6 col-7">
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                    <li class="breadcrumb-item"><a href="#"><i class="fas fa-book-reader"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ path('book_index') }}">{{ 'Books'|trans }}</a></li>
+                    <li class="breadcrumb-item active"><a href="#">{{ 'Book'|trans }}</a></li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-lg-6 col-5 text-right">
+            {{ include('book/_delete_form.html.twig') }}
+            <a href="{{ path('book_edit', {'id': book.id}) }}" class="btn btn-sm btn-neutral"><i class="fas fa-pencil-alt"></i> {{ 'Edit Book'|trans }}</a>
+            <a href="{{ path('book_index') }}" class="btn btn-sm btn-neutral"><i class="fas fa-home"></i> {{ 'Back to list'|trans }}</a>
+        </div>
+    </div>
+
+    <div class="card card-profile shadow">
+        <div class="row justify-content-center">
+            <div class="col-lg-3 order-lg-2">
+                <div class="card-profile-image">
+                    <a href="#">
+                        <img alt="Image placeholder" src="{{ vich_uploader_asset(book, 'coverFile')|default(asset('assets/img/icons/reading.svg')) }}">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body pt-8 pt-md-9">
+            <div class="row  pt-2 pb-2">
+                <div class="col-md-6">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <i class="ni ni-book-bookmark"></i>
+                        </div>
+                        <div class="col ml--2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h4 class="mb-0 text-sm">{{ 'Title of the book'|trans }}</h4>
+                                </div>
+                            </div>
+                            <p class="text-sm mb-0">{{ book.title }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <i class="ni ni-book-bookmark"></i>
+                        </div>
+                        <div class="col ml--2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h4 class="mb-0 text-sm">{{ 'Description'|trans }}</h4>
+                                </div>
+                            </div>
+                            <p class="text-sm mb-0">{{ book.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row  pt-2 pb-2">
+                <div class="col-md-6">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <i class="ni ni-book-bookmark"></i>
+                        </div>
+                        <div class="col ml--2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h4 class="mb-0 text-sm">{{ 'Quantity'|trans }}</h4>
+                                </div>
+                            </div>
+                            <p class="text-sm mb-0">{{ book.quantity }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <i class="ni ni-book-bookmark"></i>
+                        </div>
+                        <div class="col ml--2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h4 class="mb-0 text-sm">{{ 'Section'|trans }}</h4>
+                                </div>
+                            </div>
+                            <p class="text-sm mb-0">{{ book.section|default('---') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row  pt-2 pb-2">
+                <div class="col-md-6">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <i class="ni ni-book-bookmark"></i>
+                        </div>
+                        <div class="col ml--2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h4 class="mb-0 text-sm">{{ 'International Standard Book Number'|trans }}</h4>
+                                </div>
+                            </div>
+                            <p class="text-sm mb-0">{{ book.isbn|default('---') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card bg-secondary shadow mt-4">
         <div class="card-header bg-white border-0">
             <div class="row align-items-center">
                 <div class="col-8">
-                    <h3 class="mb-0">Book</h3>
-                </div>
-                <div class="col-4 text-right">
-                    <a href="{{ path('book_index') }}">back to list</a>
-
-                    <a href="{{ path('book_edit', {'id': book.id}) }}">edit</a>
+                    <h3 class="mb-0">{{ 'Category'|trans }}</h3>
                 </div>
             </div>
         </div>
         <div class="card-body">
-            <table class="table">
-                <tbody>
-                <tr>
-                    <th>Id</th>
-                    <td>{{ book.id }}</td>
-                </tr>
-                <tr>
-                    <th>Title</th>
-                    <td>{{ book.title }}</td>
-                </tr>
-                <tr>
-                    <th>Description</th>
-                    <td>{{ book.description }}</td>
-                </tr>
-                <tr>
-                    <th>Quantity</th>
-                    <td>{{ book.quantity }}</td>
-                </tr>
-                <tr>
-                    <th>Section</th>
-                    <td>{{ book.section }}</td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="row ">
+                <div class="col-md-6">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <i class="ni ni-book-bookmark"></i>
+                        </div>
+                        <div class="col ml--2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h4 class="mb-0 text-sm">{{ 'Title'|trans }}</h4>
+                                </div>
+                            </div>
+                            <p class="text-sm mb-0">{{ book.category.title }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <i class="ni ni-support-16"></i>
+                        </div>
+                        <div class="col ml--2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h4 class="mb-0 text-sm">{{ 'Code'|trans }}</h4>
+                                </div>
+                            </div>
+                            <p class="text-sm mb-0">{{ book.category.code|default('---') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-footer">
-            {{ include('book/_delete_form.html.twig') }}
-        </div>
-
     </div>
+
 {% endblock %}

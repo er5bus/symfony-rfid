@@ -1,0 +1,152 @@
+{% extends 'admin_layout.html.twig' %}
+
+{% block title %}{{ 'Dashboard'|trans }}{% endblock %}
+
+{% block body %}
+    <!-- Card stats -->
+    <div class="row pb-4">
+        <div class="col-xl-4 col-lg-6">
+            <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title text-uppercase text-muted mb-0">{{ 'Books'|trans }}</h5>
+                            <span class="h2 font-weight-bold mb-0">{{ total_books }}</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                                <i class="fas fa-book"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-6">
+            <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title text-uppercase text-muted mb-0">{{ 'Users'|trans }}</h5>
+                            <span class="h2 font-weight-bold mb-0">{{ total_users }}</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-6">
+            <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title text-uppercase text-muted mb-0">{{ 'Reservations'|trans }}</h5>
+                            <span class="h2 font-weight-bold mb-0">{{ total_reservations }}</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                                <i class="fas fa-book-reader"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header border-2">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="mb-0">{{ 'Reservation stats'|trans }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+{#            {% if order_statistics %}#}
+{#                <div#}
+{#                        class="echart-large js-pie-echarts"#}
+{#                        data-echarts-line="data-echarts-line"#}
+{#                        data-title="{{ 'admin.dashboard.order_stats'|trans }}"#}
+{#                        data-legend='{{ order_statistics|array_column("name")|json_encode|raw }}'#}
+{#                        data-series='{{ order_statistics|json_encode|raw }}'></div>#}
+{#            {% else %}#}
+{#                <div class="echart-large">#}
+{#                    <span class="chart_icon">#}
+{#                      <p class="uk-text-large">{{ 'admin.promo.statistics.not_found'|trans }}</p>#}
+{#                    </span>#}
+{#                </div>#}
+{#            {% endif %}#}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/vendor/echarts/dist/echarts-en.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            // based on prepared DOM, initialize echarts instance
+
+            $('.js-line-echarts').each(function (index) {
+                var $element = $(this);
+                var chart = echarts.init($element[0]);
+
+                var option = {
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: $element.data('dates')
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLabel: {
+                            formatter: '{value} €'
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        formatter: "{b} : {c} €"
+                    },
+                    title: {
+                        text: $element.data('title'),
+                        x: 'center'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        x: 'left'
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            saveAsImage: {
+                                show: true,
+                                title: ' '
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            data: $element.data('values'),
+                            type: 'line',
+                            areaStyle: {}
+                        }
+                    ],
+                    dataZoom: [
+                        {
+                            show: true
+                        }
+                    ]
+                };
+
+                chart.setOption(option);
+            });
+        });
+    </script>
+{% endblock %}

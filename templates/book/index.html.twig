@@ -1,54 +1,98 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin_layout.html.twig' %}
 
-{% block title %}Book index{% endblock %}
+{% block title %}{{ 'Books'|trans }}{% endblock %}
 
 {% block body %}
-    <div class="card shadow">
-        <div class="card-header border-0">
-            <div class="row align-items-center">
-                <div class="col">
-                    <h3 class="mb-0">Books</h3>
-                </div>
-
-                <div class="col text-right">
-                    <a class="btn btn-sm btn-primary" href="{{ path('book_new') }}">Create new</a>
-                </div>
-            </div>
+    <div class="row align-items-center py-4">
+        <div class="col-lg-6 col-7">
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                    <li class="breadcrumb-item"><a href="#"><i class="fas fa-book-reader"></i></a></li>
+                    <li class="breadcrumb-item"><a href="#">{{ 'Books'|trans }}</a></li>
+                </ol>
+            </nav>
         </div>
-        <div class="table-responsive">
-            <!-- Projects table -->
-            <table class="table align-items-center table-flush">
-                <thead class="thead-light">
-                <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col" >Title</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Section</th>
-                    <th scope="col">actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for book in books %}
-                    <tr>
-                        <td>{{ book.id }}</td>
-                        <td>{{ book.title }}</td>
-                        <td>{{ book.description }}</td>
-                        <td>{{ book.quantity }}</td>
-                        <td>{{ book.section }}</td>
-                        <td>
-                            <a href="{{ path('book_show', {'id': book.id}) }}">show</a>
-                            <a href="{{ path('book_edit', {'id': book.id}) }}">edit</a>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="6">no records found</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+        <div class="col-lg-6 col-5 text-right">
+            <a href="{{ path('book_new') }}" class="btn btn-sm btn-neutral"><i class="fas fa-plus-circle"></i> {{ 'Create new book'|trans }}</a>
         </div>
     </div>
 
+    <div class="card shadow">
+        <div class="card-header border-2">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="mb-0">{{ 'Books'|trans }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <form action="{{ path('book_index') }}" method="get">
+                    <div class="col-4 pt-4 float-right">
+                        <div class="form-group">
+                            <div class="input-group mb-4">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
+                                </div>
+                                <input class="form-control" name="search" placeholder="{{ 'Search'|trans }}"
+                                       type="text" value="{{ app.request.get('search', null) }}">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Projects table -->
+                <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">{{ knp_pagination_sortable(books, 'Book'|trans, 'c.title') }}</th>
+                        <th scope="col">{{ knp_pagination_sortable(books, 'Section'|trans, 'c.section') }}</th>
+                        <th scope="col">{{ knp_pagination_sortable(books, 'Quantity'|trans, 'c.quantity') }}</th>
+                        <th scope="col">{{ knp_pagination_sortable(books, 'Reserved books'|trans, 'reservedBooks') }}</th>
+                        <th scope="col">actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in books %}
+                        <tr>
+                            <td>
+                                <div class="media align-items-center">
+                                    <a href="#" class="avatar rounded-circle mr-3">
+                                        <img alt="Image placeholder" src="{{ vich_uploader_asset(item.book, 'coverFile')|default(asset('assets/img/icons/reading.svg')) }}">
+                                    </a>
+                                    <div class="media-body">
+                                        <span class="mb-0 text-sm">{{ item.book.title }}</span>
+                                        <p class="mb-0 text-sm">{{ item.book.description }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ item.book.section }}</td>
+                            <td>{{ item.book.quantity }} {{ 'Book'|trans }}</td>
+                            <td>{{ item.reservedBooks|default(0) }} {{ 'Book'|trans }}</td>
+                            <td>
+                                <a class="btn btn-sm btn-icon-only btn-primary" role="button"
+                                   href="{{ path('book_show', {'id': item.book.id}) }}">
+                                    <span class="btn-inner--icon"><i class="far fa-eye"></i></span>
+                                </a>
+                                <a class="btn btn-sm btn-icon-only btn-primary" role="button"
+                                   href="{{ path('book_edit', {'id': item.book.id}) }}">
+                                    <span class="btn-inner--icon"><i class="far fa-edit"></i></span>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center">{{ 'No records found'|trans }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div aria-label="Page navigation example">
+                {{ knp_pagination_render(books) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

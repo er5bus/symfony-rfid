@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Book;
+use App\Entity\Reservation;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,32 +22,62 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
-    // /**
-    //  * @return Book[] Returns an array of Book objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function countAllBooks()
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
+            ->select('count(b.id) as total')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getSingleResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Book
+    public function getFindAllQuery($search)
     {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $qb = $this->createQueryBuilder('c')
+            ->select('c as book')
+            ->join('c.category', 'ca');
+
+        $this->getReservedBooks($qb);
+        $this->filterBooks($search, $qb);
+
+        return $qb->getQuery();
     }
-    */
+
+    /**
+     * Select the reserved books
+     *
+     * @param QueryBuilder $qb
+     */
+    private function getReservedBooks(QueryBuilder $qb): void
+    {
+        $qb
+            ->addSelect(sprintf(
+                "(SELECT SUM(r.borrowingQuantity)
+            FROM %s as r
+            WHERE r MEMBER OF c.reservations 
+            AND :now BETWEEN r.startBorrowingDate AND r.endBorrowingDate
+            AND r.status in (:book_status) ) AS reservedBooks"
+                , Reservation::class))
+            ->setParameter('now', new DateTime('now'))
+            ->setParameter('book_status', [Reservation::FULLY_ACCEPTED, Reservation::PARTIALLY_ACCEPTED]);
+    }
+
+    /**
+     * Filter the books by the given word
+     *
+     * @param mixed $search
+     * @param QueryBuilder $qb
+     */
+    private function filterBooks($search, QueryBuilder $qb): void
+    {
+        if (!empty($search)) {
+            $qb
+                ->where('ca.code LIKE :search')
+                ->orWhere('ca.title LIKE :search')
+                ->orWhere('c.description LIKE :search')
+                ->orWhere('c.isbn LIKE :search')
+                ->orWhere('c.title LIKE :search')
+                ->orWhere('c.section LIKE :search')
+                ->setParameter('search', "%{$search}%");
+        }
+    }
 }

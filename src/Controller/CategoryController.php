@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Controller\Traits\ControllerTrait;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,16 +14,29 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/category")
+ * @Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_LIBRARIAN')")
  */
 class CategoryController extends Controller
 {
+    use ControllerTrait;
+
     /**
      * @Route("/", name="category_index", methods={"GET"})
+     * @param Request $request
+     * @param CategoryRepository $categoryRepository
+     * @return Response
      */
-    public function index(CategoryRepository $categoryRepository): Response
+    public function index(Request $request, CategoryRepository $categoryRepository): Response
     {
+        $categories = $this->getKnpPaginator()
+            ->paginate(
+                $categoryRepository->getFindAllQuery($request->query->get('search', null)),
+                $request->query->getInt('page', 1), /*page number*/
+                10 /*limit per page*/
+            );
+
         return $this->render('category/index.html.twig', [
-            'categories' => $categoryRepository->findAll(),
+            'categories' => $categories
         ]);
     }
 
@@ -39,6 +54,7 @@ class CategoryController extends Controller
             $entityManager->persist($category);
             $entityManager->flush();
 
+            $this->addFlash('success', $this->trans('New category has been created'));
             return $this->redirectToRoute('category_index');
         }
 
@@ -69,6 +85,7 @@ class CategoryController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('success', $this->trans('The category has been created successfully'));
             return $this->redirectToRoute('category_index', [
                 'id' => $category->getId(),
             ]);
@@ -86,9 +103,15 @@ class CategoryController extends Controller
     public function delete(Request $request, Category $category): Response
     {
         if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($category);
-            $entityManager->flush();
+            try{
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($category);
+                $entityManager->flush();
+
+                $this->addFlash('success', $this->trans('The category has been deleted successfully'));
+            }catch (\Exception $exception){
+                $this->addFlash('danger', $this->trans('The category can not be deleted'));
+            }
         }
 
         return $this->redirectToRoute('category_index');

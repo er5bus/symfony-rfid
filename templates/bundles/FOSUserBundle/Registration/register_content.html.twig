@@ -1,0 +1,56 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-7 col-md-10">
+        <div class="card bg-secondary shadow border-2">
+            <div class="card-header border-2">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="mb-0 text-center">{{ 'Create new account ?'|trans }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body px-lg-5 py-lg-5 pb-4">
+
+                {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.firstName) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(form.lastName) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.birthday) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(form.phoneNumber) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form_row(form.address) }}
+                    </div>
+                </div>
+
+                {{ form_rest(form) }}
+                <div class="text-center">
+                    <button class="btn btn-primary" type="submit"><i class="fas fa-check"></i> {{ 'registration.submit'|trans }}</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-6">
+                <a href="{{ path('fos_user_resetting_request') }}" class="text-light"><small>{{ 'Forgot password ?'|trans }}</small></a>
+            </div>
+            <div class="col-6 text-right">
+                <a href="{{ path('fos_user_security_login') }}" class="text-light"><small>{{ 'Already have an account ?'|trans }}</small></a>
+            </div>
+        </div>
+    </div>
+</div>

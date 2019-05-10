@@ -1,5 +1,2 @@
 # This file is the entry point to configure your own HTTP routes.
 # Files in the routes/ subdirectory configure the routes for your dependencies.
-
-fos_user:
-  resource: "@FOSUserBundle/Resources/config/routing/all.xml"

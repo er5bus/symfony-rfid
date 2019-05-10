@@ -1,0 +1,107 @@
+{% extends 'admin_layout.html.twig' %}
+
+{% block title %}{{ 'Reservation index'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="row align-items-center py-4">
+        <div class="col-lg-6 col-7">
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                    <li class="breadcrumb-item"><a href="#"><i class="fas fa-book-reader"></i></a></li>
+                    <li class="breadcrumb-item"><a href="#">{{ 'Reservations'|trans }}</a></li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-lg-6 col-5 text-right">
+            <a href="{{ path('reservation_new') }}" class="btn btn-sm btn-neutral"><i
+                        class="fas fa-plus-circle"></i> {{ 'Create new Reservation'|trans }}</a>
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header border-2">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="mb-0">{{ 'Reservations'|trans }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <form action="{{ path('reservation_index') }}" method="get">
+                    <div class="col-4 pt-4 float-right">
+                        <div class="form-group">
+                            <div class="input-group mb-4">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
+                                </div>
+                                <input class="form-control" name="search" placeholder="{{ 'Search'|trans }}"
+                                       type="text" value="{{ app.request.get('search', null) }}">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- Projects table -->
+                <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">{{ knp_pagination_sortable(reservations, 'Book'|trans, 'book.title') }}</th>
+                        <th scope="col">{{ knp_pagination_sortable(reservations, 'Borrowing Date'|trans, 'r.startBorrowingDate') }}</th>
+                        <th scope="col">{{ knp_pagination_sortable(reservations, 'Status'|trans, 'c.status') }}</th>
+                        <th scope="col">{{ 'actions'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for reservation in reservations %}
+                        <tr>
+                            <td>
+                                <div class="media align-items-center">
+                                    <a href="#" class="avatar rounded-circle mr-3">
+                                        <img alt="Image placeholder"
+                                             src="{{ vich_uploader_asset(reservation.book, 'coverFile')|default(asset('assets/img/icons/reading.svg')) }}">
+                                    </a>
+                                    <div class="media-body">
+                                        <span class="mb-0 text-sm">{{ reservation.book.title }}</span>
+                                        <p class="mb-0 text-sm">{{ reservation.book.description }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="text-sm">
+                                    <i class="far fa-calendar-alt"></i>
+                                    {{ reservation.startBorrowingDate ? reservation.startBorrowingDate|date('Y-m-d') : '---' }}
+                                </span>
+                                <i class="fas fa-arrow-right"></i>
+                                <span class="text-sm">
+                                    <i class="far fa-calendar-alt"></i>
+                                    {{ reservation.endBorrowingDate ? reservation.endBorrowingDate|date('Y-m-d') : '---' }}
+                                </span>
+                            </td>
+                            <td><span class="badge badge-info">{{ reservation.status }}</span></td>
+                            <td>
+                                <a class="btn btn-sm btn-icon-only btn-2 btn-primary" role="button"
+                                   href="{{ path('reservation_show', {'id': reservation.id}) }}">
+                                    <span class="btn-inner--icon"><i class="far fa-eye"></i></span>
+                                </a>
+                                <a class="btn btn-sm btn-icon-only btn-2 btn-primary" role="button"
+                                   href="{{ path('reservation_edit', {'id': reservation.id}) }}">
+                                    <span class="btn-inner--icon"><i class="far fa-edit"></i></span>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center">{{ 'No records found'|trans }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="float-right" aria-label="Page navigation example ">
+                {{ knp_pagination_render(reservations) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
