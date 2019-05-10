@@ -1,0 +1,112 @@
+'New Category': '__New Category'
+Categories: __Categories
+'Create New Category': '__Create New Category'
+'Back to list': '__Back to list'
+'Edit Category': '__Edit Category'
+'Category index': '__Category index'
+Search: __Search
+Title: __Title
+Code: __Code
+Actions: __Actions
+'No records found': '__No records found'
+Category: __Category
+'Delete Category': '__Delete Category'
+Save: __Save
+'Create new account ?': '__Create new account ?'
+'Already have an account ?': '__Already have an account ?'
+'Forgot password ?': '__Forgot password ?'
+'New User': '__New User'
+Users: __Users
+'Create New User': '__Create New User'
+'Edit User': '__Edit User'
+'User index': '__User index'
+'Create new User': '__Create new User'
+User: __User
+Username: __Username
+Email: __Email
+'Last Login': '__Last Login'
+Account: __Account
+'User information': '__User information'
+'Email address': '__Email address'
+'First name': '__First name'
+'No data': '__No data'
+'Last name': '__Last name'
+Birthday: __Birthday
+'Contact information': '__Contact information'
+Address: __Address
+Phone: __Phone
+'Delete User': '__Delete User'
+'Book available': '__Book available'
+'Book title': '__Book title'
+'Book Author': '__Book Author'
+Description: __Description
+'Publish date': '__Publish date'
+'Borrow this book': '__Borrow this book'
+'Create a borrowing request': '__Create a borrowing request'
+'Borrowing quantity': '__Borrowing quantity'
+'Start borrowing date': '__Start borrowing date'
+'End borrowing date': '__End borrowing date'
+'Borrow now': '__Borrow now'
+Close: __Close
+'No results were found to match your search item': '__No results were found to match your search item'
+'My reservation': '__My reservation'
+'Requested Book': '__Requested Book'
+'Requested Quantity': '__Requested Quantity'
+'Start Borrowing Date': '__Start Borrowing Date'
+'End Borrowing Date': '__End Borrowing Date'
+'Borrowing Quantity': '__Borrowing Quantity'
+Status: __Status
+Book: __Book
+Dashboard: __Dashboard
+Books: __Books
+Reservations: __Reservations
+'Reservations per month': '__Reservations per month'
+'Not enough data': '__Not enough data'
+'New Reservation': '__New Reservation'
+'Create New Reservation': '__Create New Reservation'
+'Edit Reservation': '__Edit Reservation'
+'Reservation index': '__Reservation index'
+'Create new Reservation': '__Create new Reservation'
+'Borrowing Date': '__Borrowing Date'
+'Borrowed Quantity': '__Borrowed Quantity'
+Reservation: __Reservation
+'Created At': '__Created At'
+'Updated At': '__Updated At'
+'Title of the book': '__Title of the book'
+'Author of the book': '__Author of the book'
+Quantity: __Quantity
+Section: __Section
+'International Standard Book Number': '__International Standard Book Number'
+'Delete Reservation': '__Delete Reservation'
+'My profile': '__My profile'
+Settings: __Settings
+Logout: __Logout
+'Customer Area': '__Customer Area'
+'No reservations existe': '__No reservations existe'
+'Change Your Password': '__Change Your Password'
+'Update my Account': '__Update my Account'
+Administration: __Administration
+'New Book': '__New Book'
+'Create New Book': '__Create New Book'
+'Edit Book': '__Edit Book'
+'Create new book': '__Create new book'
+Author: __Author
+'Reserved books': '__Reserved books'
+'In stock': '__In stock'
+'Delete Book': '__Delete Book'
+'No file selected': '__No file selected'
+
+'New book has been created successfully': ''
+'The book has been updated successfully': ''
+'The book has been deleted successfully': ''
+'The book can not be deleted': ''
+'New category has been created': ''
+'The category has been created successfully': ''
+'The category has been deleted successfully': ''
+'The category can not be deleted': ''
+'New reservation has been created successfully': ''
+'The reservation has been updated successfully': ''
+'The reservation has been deleted successfully': ''
+'The reservation can not be deleted': ''
+'New user has been created successfully': ''
+'The user has been updated successfully': ''

@@ -47,8 +47,9 @@
                     <tr>
                         <th scope="col">{{ knp_pagination_sortable(reservations, 'Book'|trans, 'book.title') }}</th>
                         <th scope="col">{{ knp_pagination_sortable(reservations, 'Borrowing Date'|trans, 'r.startBorrowingDate') }}</th>
+                        <th scope="col">{{ knp_pagination_sortable(reservations, 'Borrowed Quantity'|trans, 'r.borrowingQuantity') }}</th>
                         <th scope="col">{{ knp_pagination_sortable(reservations, 'Status'|trans, 'c.status') }}</th>
-                        <th scope="col">{{ 'actions'|trans }}</th>
+                        <th scope="col">{{ 'Actions'|trans }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -77,6 +78,7 @@
                                     {{ reservation.endBorrowingDate ? reservation.endBorrowingDate|date('Y-m-d') : '---' }}
                                 </span>
                             </td>
+                            <td>{{ reservation.borrowingQuantity|default('---') }} {{ 'Book'|trans }}</td>
                             <td><span class="badge badge-info">{{ reservation.status }}</span></td>
                             <td>
                                 <a class="btn btn-sm btn-icon-only btn-2 btn-primary" role="button"

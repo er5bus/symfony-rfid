@@ -17,22 +17,34 @@
                             <div class="card card-lift--hover shadow border-1">
                                 <div class="row">
                                     <div class="col">
-                                        <div class="card-img-top pt-2">
-                                            <img src="{{ vich_uploader_asset(item.book, 'coverFile')|default(asset('assets/img/icons/reading.svg')) }}"
-                                                 class="col-md-6" alt="">
+                                        <div class="float-left pt-2 pl-2">
+                                            <p class="badge badge-info">{{ item.book.quantity - item.reservedBooks }} {{ 'Book available'|trans }}</p>
                                         </div>
                                     </div>
                                     <div class="col-auto">
-                                        <div class="pt-2 pr-2">
+                                        <div class="float-right pt-2 pr-2">
                                             <p class="badge badge-info">{{ item.book.category.title }}</p>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card-img-top pt-2">
+                                            <img  src="{{ vich_uploader_asset(item.book, 'coverFile')|default(asset('assets/img/icons/reading.svg')) }}"
+                                                 class="img-center card-book-cover" alt="">
+                                        </div>
+                                    </div>
+                                </div>
 
-                                <div class="card-body card-body plr-5">
+                                <div class="card-body text-center plr-5">
                                     <div class="pb-2">
                                         <h4 class="mb-0 text-sm text-blue">{{ 'Book title'|trans }}</h4>
                                         <p class="text-sm mb-0">{{ item.book.title }}</p>
+                                    </div>
+
+                                    <div class="pb-2">
+                                        <h4 class="mb-0 text-sm text-blue">{{ 'Book Author'|trans }}</h4>
+                                        <p class="text-sm mb-0">{{ item.book.author|default('---') }}</p>
                                     </div>
 
                                     <div class="pb-2">
@@ -41,21 +53,11 @@
                                     </div>
 
                                     <div class="pb-2">
-                                        <h4 class="mb-0 text-sm text-blue">{{ 'Quantity available'|trans }}</h4>
-                                        <p class="text-sm mb-0">{{ item.book.quantity - item.reservedBooks }} {{ 'Book'|trans }}</p>
-                                    </div>
-
-                                    <div class="pb-2">
-                                        <h4 class="mb-0 text-sm text-blue">{{ 'Section'|trans }}</h4>
-                                        <p class="text-sm mb-0">{{ item.book.section|default('---') }}</p>
-                                    </div>
-
-                                    <div class="pb-2">
-                                        <h4 class="mb-0 text-sm text-blue">{{ 'International Standard Book Number'|trans }}</h4>
-                                        <p class="text-sm mb-0">{{ item.book.isbn|default('---') }}</p>
+                                        <h4 class="mb-0 text-sm text-blue">{{ 'Publish date'|trans }}</h4>
+                                        <p class="text-sm mb-0">{{ item.book.publishDate|date('m/d/Y')|default('---') }}</p>
                                     </div>
                                 </div>
-                                <div class="card-footer">
+                                <div class="card-footer text-center">
                                     <button type="button" class="btn btn-sm btn-primary mb-3" data-toggle="modal"
                                             data-target="#modal-{{ item.book.id }}">
                                         {{ 'Borrow this book'|trans }}

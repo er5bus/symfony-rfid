@@ -59,29 +59,29 @@
         </div>
     </div>
 
-    <div class="card shadow">
+    <div class="card bg-secondary">
         <div class="card-header border-2">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="mb-0">{{ 'Reservation stats'|trans }}</h3>
+                    <h3 class="mb-0">{{ 'Reservations per month'|trans }}</h3>
                 </div>
             </div>
         </div>
         <div class="card-body">
-{#            {% if order_statistics %}#}
-{#                <div#}
-{#                        class="echart-large js-pie-echarts"#}
-{#                        data-echarts-line="data-echarts-line"#}
-{#                        data-title="{{ 'admin.dashboard.order_stats'|trans }}"#}
-{#                        data-legend='{{ order_statistics|array_column("name")|json_encode|raw }}'#}
-{#                        data-series='{{ order_statistics|json_encode|raw }}'></div>#}
-{#            {% else %}#}
-{#                <div class="echart-large">#}
-{#                    <span class="chart_icon">#}
-{#                      <p class="uk-text-large">{{ 'admin.promo.statistics.not_found'|trans }}</p>#}
-{#                    </span>#}
-{#                </div>#}
-{#            {% endif %}#}
+            {% if reservations_stats and reservations_stats|length > 1 %}
+                <div
+                        class="echart-extra-large js-line-echarts"
+                        data-echarts-line="data-echarts-line"
+                        data-values='{{ reservations_stats|array_column("value")|json_encode|raw }}'
+                        data-dates='{{ reservations_stats|array_column("name")|json_encode|raw }}'></div>
+            {% else %}
+                <div class="echart-large text-center">
+                    <img width="100" alt='#' src="{{ asset('assets/img/icons/data.svg') }}"/>
+                    <h4 class="pt-3">{{ 'Not enough data'|trans }}</h4>
+                </div>
+            {% endif %}
+
+
         </div>
     </div>
 
@@ -93,7 +93,6 @@
     <script>
         $(document).ready(function () {
             // based on prepared DOM, initialize echarts instance
-
             $('.js-line-echarts').each(function (index) {
                 var $element = $(this);
                 var chart = echarts.init($element[0]);
@@ -107,12 +106,12 @@
                     yAxis: {
                         type: 'value',
                         axisLabel: {
-                            formatter: '{value} €'
+                            formatter: '{value}'
                         }
                     },
                     tooltip: {
                         trigger: 'axis',
-                        formatter: "{b} : {c} €"
+                        formatter: "{b} : {c}"
                     },
                     title: {
                         text: $element.data('title'),

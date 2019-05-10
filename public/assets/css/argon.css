@@ -16047,8 +16047,19 @@ a.btn-icon-only {
     border-radius: .375rem;
 }
 
-.card-profile-image img:hover {
-    transform: translate(-50%, -33%);
+.card-book-cover {
+    max-width: 180px;
+    max-height: 180px;
+}
+
+.echart-extra-large{
+    min-height: 30rem;
+}
+
+.card-book-cover:hover {
+    max-width: 180px;
+    max-height: 180px;
+    transition: all .15s ease;
 }
 
 .card-profile-stats {

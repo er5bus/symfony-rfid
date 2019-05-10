@@ -68,7 +68,40 @@
                 <div class="col-md-6">
                     <div class="row align-items-center">
                         <div class="col-auto">
-                            <i class="ni ni-book-bookmark"></i>
+                            <i class="ni ni-circle-08"></i>
+                        </div>
+                        <div class="col ml--2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h4 class="mb-0 text-sm">{{ 'Author of the book'|trans }}</h4>
+                                </div>
+                            </div>
+                            <p class="text-sm mb-0">{{ book.author }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <i class="ni ni-calendar-grid-58"></i>
+                        </div>
+                        <div class="col ml--2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h4 class="mb-0 text-sm">{{ 'Publish date'|trans }}</h4>
+                                </div>
+                            </div>
+                            <p class="text-sm mb-0">{{ book.publishDate|date('d/m/yy')|default('---') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row  pt-2 pb-2">
+                <div class="col-md-6">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <i class="ni ni-books"></i>
                         </div>
                         <div class="col ml--2">
                             <div class="d-flex justify-content-between align-items-center">
@@ -83,7 +116,7 @@
                 <div class="col-md-6">
                     <div class="row align-items-center">
                         <div class="col-auto">
-                            <i class="ni ni-book-bookmark"></i>
+                            <i class="ni ni-planet"></i>
                         </div>
                         <div class="col ml--2">
                             <div class="d-flex justify-content-between align-items-center">
@@ -101,7 +134,7 @@
                 <div class="col-md-6">
                     <div class="row align-items-center">
                         <div class="col-auto">
-                            <i class="ni ni-book-bookmark"></i>
+                            <i class="ni ni-support-16"></i>
                         </div>
                         <div class="col ml--2">
                             <div class="d-flex justify-content-between align-items-center">

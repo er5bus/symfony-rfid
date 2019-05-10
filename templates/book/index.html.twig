@@ -46,10 +46,10 @@
                     <thead class="thead-light">
                     <tr>
                         <th scope="col">{{ knp_pagination_sortable(books, 'Book'|trans, 'c.title') }}</th>
-                        <th scope="col">{{ knp_pagination_sortable(books, 'Section'|trans, 'c.section') }}</th>
-                        <th scope="col">{{ knp_pagination_sortable(books, 'Quantity'|trans, 'c.quantity') }}</th>
+                        <th scope="col">{{ knp_pagination_sortable(books, 'Author'|trans, 'c.author') }}</th>
                         <th scope="col">{{ knp_pagination_sortable(books, 'Reserved books'|trans, 'reservedBooks') }}</th>
-                        <th scope="col">actions</th>
+                        <th scope="col">{{ knp_pagination_sortable(books, 'In stock'|trans, 'reservedBooks') }}</th>
+                        <th scope="col">{{ 'Actions'|trans }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -66,9 +66,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>{{ item.book.section }}</td>
-                            <td>{{ item.book.quantity }} {{ 'Book'|trans }}</td>
+                            <td>{{ item.book.author|default('---') }}</td>
                             <td>{{ item.reservedBooks|default(0) }} {{ 'Book'|trans }}</td>
+                            <td>{{ item.book.quantity - item.reservedBooks }} {{ 'Book'|trans }}</td>
                             <td>
                                 <a class="btn btn-sm btn-icon-only btn-primary" role="button"
                                    href="{{ path('book_show', {'id': item.book.id}) }}">
@@ -90,7 +90,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <div aria-label="Page navigation example">
+            <div class="float-right" aria-label="Page navigation example">
                 {{ knp_pagination_render(books) }}
             </div>
         </div>

@@ -24,13 +24,38 @@ class DashboardController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $totalBooks = $em->getRepository(Book::class)->countAllBooks();
-        $totalReservations = $em->getRepository(Reservation::class)->countAllReservations();
-        $totalUsers = $em->getRepository(User::class)->countAllUsers();
+        $reservationsRepository = $em->getRepository(Reservation::class);
+        $bookRepository = $em->getRepository(Book::class);
+        $userRepository = $em->getRepository(User::class);
+
+        $totalBooks = $bookRepository->countAllBooks();
+        $totalReservations = $reservationsRepository->countAllReservations();
+        $totalUsers = $userRepository->countAllUsers();
+
+        $reservationsStats = [];
+        foreach ($reservationsRepository->reservationStats() as $value){
+
+            if (!$value['createdAt'] instanceof \DateTime){
+                continue;
+            }
+
+            $key = $value['createdAt']->format('m-Y');
+            if (isset($reservationsStats[$key])){
+                $reservationsStats[$key]['value'] = $reservationsStats[$key]['value'] + $value['borrowedQuantity'];
+                continue;
+            }
+
+            $reservationsStats[$key] = [
+                'name' => $key,
+                'value' => $value['borrowedQuantity']
+            ];
+        }
+
         return $this->render('dashboard/index.html.twig', [
             'total_books' => $totalBooks['total'] ?? 0,
             'total_reservations' => $totalReservations['total'] ?? 0,
-            'total_users' => $totalUsers['total'] ?? 0
+            'total_users' => $totalUsers['total'] ?? 0,
+            'reservations_stats' => array_values($reservationsStats)
         ]);
     }
 }

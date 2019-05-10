@@ -25,7 +25,7 @@ class BookRepository extends ServiceEntityRepository
     public function countAllBooks()
     {
         return $this->createQueryBuilder('b')
-            ->select('count(b.id) as total')
+            ->select('SUM(b.quantity) as total')
             ->getQuery()
             ->getSingleResult();
     }
@@ -76,6 +76,8 @@ class BookRepository extends ServiceEntityRepository
                 ->orWhere('c.description LIKE :search')
                 ->orWhere('c.isbn LIKE :search')
                 ->orWhere('c.title LIKE :search')
+                ->orWhere('c.publishDate LIKE :search')
+                ->orWhere('c.author LIKE :search')
                 ->orWhere('c.section LIKE :search')
                 ->setParameter('search', "%{$search}%");
         }

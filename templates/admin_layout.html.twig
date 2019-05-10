@@ -103,11 +103,13 @@
                         <i class="ni ni-archive-2 text-primary"></i> {{ 'Reservation'|trans }}
                     </a>
                 </li>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('user_index') }}">
                         <i class="ni ni-badge text-primary"></i> {{ 'User'|trans }}
                     </a>
                 </li>
+                {% endif %}
             </ul>
         </div>
     </div>
@@ -117,6 +119,11 @@
     <!-- Top navbar -->
     <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
         <div class="container-fluid">
+            {% if is_granted('ROLE_USER') %}
+                <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ path('book_shop') }}">
+                    {{ 'Customer Area'|trans }}
+                </a>
+            {% endif %}
             <!-- User -->
             <ul class="navbar-nav align-items-center d-md-flex d-none d-md-flex ml-lg-auto">
                 <li class="nav-item dropdown ">

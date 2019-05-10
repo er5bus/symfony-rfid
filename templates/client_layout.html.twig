@@ -67,6 +67,14 @@
                 </form>
                 <!-- Navbar items -->
                 <ul class="navbar-nav ml-auto">
+                    {% if is_granted('ROLE_LIBRARIAN') or is_granted('ROLE_PREVIOUS_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-icon" href="{{ path('dashboard_index') }}">
+                            <i class="ni ni-app"></i>
+                            <span class="nav-link-inner--text">{{ 'Administration'|trans }}</span>
+                        </a>
+                    </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link nav-link-icon" href="{{ path('user_reservation') }}">
                             <i class="ni ni-books"></i>

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Reservation;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -22,9 +23,27 @@ class ReservationRepository extends ServiceEntityRepository
 
     public function getFindAllQuery($search)
     {
-        return $this->createQueryBuilder('r')
+        $qb = $this->createQueryBuilder('r')
             ->join('r.book', 'book')
-            ->getQuery();
+            ->join('book.category', 'ca')
+            ->join('r.user', 'u');
+        $this->filterReservation($search, $qb);
+        $this->filterBooks($search, $qb);
+        $this->filterUsers($search, $qb);
+
+        return $qb->getQuery();
+    }
+
+    public function findByBook($bookId)
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->select('SUM(r.borrowingQuantity) as borrowedQuantity')
+            ->addSelect('book.quantity as quantity');
+
+        $this->joinBook($bookId, $qb);
+        $this->reservedBooks($qb);
+
+        return $qb->getQuery()->getSingleResult();
     }
 
     public function getFindByUserQuery($userId)
@@ -36,19 +55,22 @@ class ReservationRepository extends ServiceEntityRepository
 
     public function countAllReservations()
     {
-        return $this->createQueryBuilder('b')
-            ->select('count(b.id) as total')
+        return $this->createQueryBuilder('r')
+            ->select('SUM(r.borrowingQuantity) as total')
             ->getQuery()
             ->getSingleResult();
     }
 
     public function reservationStats()
     {
-        return $this->createQueryBuilder('b')
-            ->select('count(b.id) as total')
-            ->groupBy()
+        $qb = $this->createQueryBuilder('r')
+            ->select('SUM(r.borrowingQuantity) as borrowedQuantity', 'r.createdAt as createdAt');
+
+        $this->reservedBooks($qb);
+
+        return $qb->groupBy('createdAt')
             ->getQuery()
-            ->getSingleResult();
+            ->getResult();
     }
 
     public function getUserReservationGroupedByStatus($userId)
@@ -64,11 +86,74 @@ class ReservationRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function joinUser($userId, QueryBuilder $qb)
+    private function reservedBooks(QueryBuilder $qb){
+        $qb
+            ->andWhere(':now BETWEEN r.startBorrowingDate AND r.endBorrowingDate')
+            ->andWhere('r.status in (:book_status)')
+            ->setParameter('now', new DateTime('now'))
+            ->setParameter('book_status', [Reservation::FULLY_ACCEPTED, Reservation::PARTIALLY_ACCEPTED])
+        ;
+    }
+
+    private function joinBook($bookId, QueryBuilder $qb)
+    {
+        $qb
+            ->join('r.book', 'book')
+            ->where('book.id = :book_id')
+            ->setParameter('book_id', $bookId);
+    }
+
+    private function joinUser($userId, QueryBuilder $qb)
     {
         $qb
             ->join('r.user', 'user')
             ->where('user.id = :user_id')
             ->setParameter('user_id', $userId);
+    }
+
+    private function filterReservation($search, QueryBuilder $qb): void
+    {
+        if (!empty($search)) {
+            $qb
+                ->where('r.createdAt LIKE :search')
+                ->orWhere('r.updatedAt LIKE :search')
+                ->orWhere('r.endBorrowingDate LIKE :search')
+                ->orWhere('r.startBorrowingDate LIKE :search')
+                ->orWhere('r.borrowingQuantity LIKE :search')
+                ->orWhere('r.status LIKE :search')
+                ->orWhere('r.requestedQuantity LIKE :search')
+                ->orWhere('r.section LIKE :search')
+                ->setParameter('search', "%{$search}%");
+        }
+    }
+
+    private function filterUsers($search, QueryBuilder $qb): void
+    {
+        if (!empty($search)) {
+            $qb
+                ->where('u.username LIKE :search')
+                ->orWhere('u.email LIKE :search')
+                ->orWhere('u.address LIKE :search')
+                ->orWhere('u.firstName LIKE :search')
+                ->orWhere('u.lastName LIKE :search')
+                ->orWhere('u.phoneNumber LIKE :search')
+                ->setParameter('search', "%{$search}%");
+        }
+    }
+
+    private function filterBooks($search, QueryBuilder $qb): void
+    {
+        if (!empty($search)) {
+            $qb
+                ->where('ca.code LIKE :search')
+                ->orWhere('ca.title LIKE :search')
+                ->orWhere('book.description LIKE :search')
+                ->orWhere('book.isbn LIKE :search')
+                ->orWhere('book.title LIKE :search')
+                ->orWhere('book.publishDate LIKE :search')
+                ->orWhere('book.author LIKE :search')
+                ->orWhere('book.section LIKE :search')
+                ->setParameter('search', "%{$search}%");
+        }
     }
 }

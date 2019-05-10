@@ -28,6 +28,16 @@ class Book
     private $title;
 
     /**
+     * @ORM\Column(type="string", length=200)
+     */
+    private $author;
+
+    /**
+     * @ORM\Column(type="date", length=200)
+     */
+    private $publishDate;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
@@ -78,14 +88,6 @@ class Book
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function setCreatedAtValue()
-    {
-        $this->borrowedQuantity = 0;
     }
 
     public function getId(): ?int
@@ -239,6 +241,42 @@ class Book
     {
         $this->isbn = $isbn;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param mixed $author
+     * @return Book
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPublishDate()
+    {
+        return $this->publishDate;
+    }
+
+    /**
+     * @param mixed $publishDate
+     * @return Book
+     */
+    public function setPublishDate($publishDate)
+    {
+        $this->publishDate = $publishDate;
         return $this;
     }
 }

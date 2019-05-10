@@ -101,6 +101,38 @@
             <div class="col-md-6">
                 <div class="row align-items-center">
                     <div class="col-auto">
+                        <i class="ni ni-books"></i>
+                    </div>
+                    <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-0 text-sm">{{ 'Requested Quantity'|trans }}</h4>
+                            </div>
+                        </div>
+                        <p class="text-sm mb-0">{{ reservation.requestedQuantity|default('---') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <i class="ni ni-books"></i>
+                    </div>
+                    <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-0 text-sm">{{ 'Borrowed Quantity'|trans }}</h4>
+                            </div>
+                        </div>
+                        <p class="text-sm mb-0">{{ reservation.borrowingQuantity|default('---') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pt-2 pb-2">
+            <div class="col-md-6">
+                <div class="row align-items-center">
+                    <div class="col-auto">
                         <i class="ni ni-support-16"></i>
                     </div>
                     <div class="col ml--2">
@@ -116,6 +148,180 @@
         </div>
     </div>
 </div>
+
+<div class="card bg-secondary mt-4">
+    <div class="card-header bg-white border-1">
+        <div class="row align-items-center">
+            <div class="col-8">
+                <h3 class="mb-0">{{ 'Book'|trans }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row  pt-2 pb-2">
+            <div class="col-md-6">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <i class="ni ni-book-bookmark"></i>
+                    </div>
+                    <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-0 text-sm">{{ 'Title of the book'|trans }}</h4>
+                            </div>
+                        </div>
+                        <p class="text-sm mb-0">{{ reservation.book.title }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <i class="ni ni-book-bookmark"></i>
+                    </div>
+                    <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-0 text-sm">{{ 'Description'|trans }}</h4>
+                            </div>
+                        </div>
+                        <p class="text-sm mb-0">{{ reservation.book.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row  pt-2 pb-2">
+            <div class="col-md-6">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <i class="ni ni-circle-08"></i>
+                    </div>
+                    <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-0 text-sm">{{ 'Author of the book'|trans }}</h4>
+                            </div>
+                        </div>
+                        <p class="text-sm mb-0">{{ reservation.book.author }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <i class="ni ni-calendar-grid-58"></i>
+                    </div>
+                    <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-0 text-sm">{{ 'Publish date'|trans }}</h4>
+                            </div>
+                        </div>
+                        <p class="text-sm mb-0">{{ reservation.book.publishDate|date('d/m/yy')|default('---') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row  pt-2 pb-2">
+            <div class="col-md-6">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <i class="ni ni-books"></i>
+                    </div>
+                    <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-0 text-sm">{{ 'Quantity'|trans }}</h4>
+                            </div>
+                        </div>
+                        <p class="text-sm mb-0">{{ reservation.book.quantity }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <i class="ni ni-planet"></i>
+                    </div>
+                    <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-0 text-sm">{{ 'Section'|trans }}</h4>
+                            </div>
+                        </div>
+                        <p class="text-sm mb-0">{{ reservation.book.section|default('---') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row  pt-2 pb-2">
+            <div class="col-md-6">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <i class="ni ni-support-16"></i>
+                    </div>
+                    <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-0 text-sm">{{ 'International Standard Book Number'|trans }}</h4>
+                            </div>
+                        </div>
+                        <p class="text-sm mb-0">{{ reservation.book.isbn|default('---') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="card bg-secondary shadow mt-4">
+    <div class="card-header bg-white border-1">
+        <div class="row align-items-center">
+            <div class="col-8">
+                <h3 class="mb-0">{{ 'Category'|trans }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row ">
+            <div class="col-md-6">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <i class="ni ni-book-bookmark"></i>
+                    </div>
+                    <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-0 text-sm">{{ 'Title'|trans }}</h4>
+                            </div>
+                        </div>
+                        <p class="text-sm mb-0">{{ reservation.book.category.title }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <i class="ni ni-support-16"></i>
+                    </div>
+                    <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-0 text-sm">{{ 'Code'|trans }}</h4>
+                            </div>
+                        </div>
+                        <p class="text-sm mb-0">{{ reservation.book.category.code|default('---') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="card bg-secondary shadow  mt-4">
     <div class="card-header bg-white border-0">
         <div class="row align-items-center">

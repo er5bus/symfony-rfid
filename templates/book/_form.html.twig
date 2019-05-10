@@ -7,10 +7,18 @@
             {{ form_row(form.title) }}
         </div>
         <div class="col-md-6">
-            {{ form_row(form.quantity) }}
+            {{ form_row(form.author) }}
         </div>
     </div>
     {{ form_row(form.description) }}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.publishDate) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.quantity) }}
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-6">
             {{ form_row(form.isbn) }}

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -67,6 +68,22 @@ class Reservation
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="reservations")
      */
     private $user;
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function prePersist(){
+        if (is_null($this->createdAt)){
+            $this->createdAt = new DateTime('now');
+        }
+    }
+
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function PreUpdate(){
+        $this->updatedAt = new DateTime('now');
+    }
 
     public function getId(): ?int
     {

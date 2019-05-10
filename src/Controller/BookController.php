@@ -33,7 +33,7 @@ class BookController extends Controller
             ->paginate(
                 $bookRepository->getFindAllQuery($request->query->get('search', null)),
                 $request->query->getInt('page', 1), /*page number*/
-                10 /*limit per page*/
+                10/*limit per page*/
             );
 
         return $this->render('book/index.html.twig', [

@@ -6,6 +6,7 @@ use App\Entity\Book;
 use App\Entity\Category;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -33,12 +34,30 @@ class BookType extends AbstractType
                     new Assert\Length(['max' => 200])
                 ],
             ])
+            ->add('author', TextType::class, [
+                'label' => 'Author of the book',
+                'constraints' => [
+                    new Assert\NotNull(),
+                    new Assert\Length(['max' => 200])
+                ],
+            ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
                 'constraints' => [
                     new Assert\NotNull(),
                     new Assert\Length(['max' => 1000])
                 ],
+            ])
+            ->add('publishDate', DateType::class, [
+                'label' => 'The Publish Date',
+                'constraints' => [
+                    new Assert\NotNull(),
+                    new Assert\Date()
+                ],
+                'attr' => ['class' => 'datepicker'],
+                'widget' => 'single_text',
+                'html5' => false,
+                'format' => 'MM/dd/yyyy'
             ])
             ->add('quantity', IntegerType::class, [
                 'label' => 'Quantity',
