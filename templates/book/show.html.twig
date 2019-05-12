@@ -15,8 +15,10 @@
         </div>
         <div class="col-lg-6 col-5 text-right">
             {{ include('book/_delete_form.html.twig') }}
-            <a href="{{ path('book_edit', {'id': book.id}) }}" class="btn btn-sm btn-neutral"><i class="fas fa-pencil-alt"></i> {{ 'Edit Book'|trans }}</a>
-            <a href="{{ path('book_index') }}" class="btn btn-sm btn-neutral"><i class="fas fa-home"></i> {{ 'Back to list'|trans }}</a>
+            <a href="{{ path('book_edit', {'id': book.id}) }}" class="btn btn-sm btn-neutral"><i
+                        class="fas fa-pencil-alt"></i> {{ 'Edit Book'|trans }}</a>
+            <a href="{{ path('book_index') }}" class="btn btn-sm btn-neutral"><i
+                        class="fas fa-home"></i> {{ 'Back to list'|trans }}</a>
         </div>
     </div>
 
@@ -25,14 +27,15 @@
             <div class="col-lg-3 order-lg-2">
                 <div class="card-profile-image">
                     <a href="#">
-                        <img alt="Image placeholder" src="{{ vich_uploader_asset(book, 'coverFile')|default(asset('assets/img/icons/reading.svg')) }}">
+                        <img alt="Image placeholder"
+                             src="{{ vich_uploader_asset(book, 'coverFile')|default(asset('assets/img/icons/no-cover.png')) }}">
                     </a>
                 </div>
             </div>
         </div>
         <div class="card-body pt-8 pt-md-9">
             <div class="row  pt-2 pb-2">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="row align-items-center">
                         <div class="col-auto">
                             <i class="ni ni-book-bookmark"></i>
@@ -47,10 +50,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+            </div>
+            <div class="row  pt-2 pb-2">
+                <div class="col-md-12">
                     <div class="row align-items-center">
                         <div class="col-auto">
-                            <i class="ni ni-book-bookmark"></i>
+                            <i class="ni ni-bag-17"></i>
                         </div>
                         <div class="col ml--2">
                             <div class="d-flex justify-content-between align-items-center">

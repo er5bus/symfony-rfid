@@ -68,12 +68,12 @@
             </div>
         </div>
         <div class="card-body">
-            {% if reservations_stats and reservations_stats|length > 1 %}
+            {% if reservations_stats_date and reservations_stats_date|length > 1 %}
                 <div
                         class="echart-extra-large js-line-echarts"
                         data-echarts-line="data-echarts-line"
-                        data-values='{{ reservations_stats|array_column("value")|json_encode|raw }}'
-                        data-dates='{{ reservations_stats|array_column("name")|json_encode|raw }}'></div>
+                        data-values='{{ reservations_stats_value|json_encode|raw }}'
+                        data-dates='{{ reservations_stats_date|json_encode|raw }}'></div>
             {% else %}
                 <div class="echart-large text-center">
                     <img width="100" alt='#' src="{{ asset('assets/img/icons/data.svg') }}"/>

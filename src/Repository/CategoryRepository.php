@@ -39,8 +39,8 @@ class CategoryRepository extends ServiceEntityRepository
     {
         if (!empty($search)) {
             $qb
-                ->where('ca.code = :search')
-                ->orWhere('ca.title = :search')
+                ->where('c.code = :search')
+                ->orWhere('c.title = :search')
                 ->setParameter('search', $search);
         }
     }

@@ -59,11 +59,11 @@
                                 <div class="media align-items-center">
                                     <a href="#" class="avatar rounded-circle mr-3">
                                         <img alt="Image placeholder"
-                                             src="{{ vich_uploader_asset(reservation.book, 'coverFile')|default(asset('assets/img/icons/reading.svg')) }}">
+                                             src="{{ vich_uploader_asset(reservation.book, 'coverFile')|default(asset('assets/img/icons/no-cover.png')) }}">
                                     </a>
                                     <div class="media-body">
-                                        <span class="mb-0 text-sm">{{ reservation.book.title }}</span>
-                                        <p class="mb-0 text-sm">{{ reservation.book.description }}</p>
+                                        <span class="mb-0 text-sm">{{ reservation.book.title|truncate(20) }}</span>
+                                        <p class="mb-0 text-sm">{{ reservation.book.description|truncate(20) }}</p>
                                     </div>
                                 </div>
                             </td>

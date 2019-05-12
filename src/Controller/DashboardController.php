@@ -46,7 +46,7 @@ class DashboardController extends Controller
             }
 
             $reservationsStats[$key] = [
-                'name' => $key,
+                'date' => $key,
                 'value' => $value['borrowedQuantity']
             ];
         }
@@ -55,7 +55,8 @@ class DashboardController extends Controller
             'total_books' => $totalBooks['total'] ?? 0,
             'total_reservations' => $totalReservations['total'] ?? 0,
             'total_users' => $totalUsers['total'] ?? 0,
-            'reservations_stats' => array_values($reservationsStats)
+            'reservations_stats_date' => array_column(array_values($reservationsStats), 'date'),
+            'reservations_stats_value' => array_column(array_values($reservationsStats), 'value'),
         ]);
     }
 }

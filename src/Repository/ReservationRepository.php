@@ -46,12 +46,17 @@ class ReservationRepository extends ServiceEntityRepository
         return $qb->getQuery()->getSingleResult();
     }
 
-    public function getFindByUserQuery($userId)
+    public function findByUserQuery($userId, $search)
     {
         $qb = $this->createQueryBuilder('r')
-            ->addSelect('book')
-            ->join('r.book', 'book');
+            ->addSelect('book', 'ca', 'u')
+            ->join('r.book', 'book')
+            ->join('book.category', 'ca')
+        ;
         $this->joinUser($userId, $qb);
+
+        $this->filterReservation($search, $qb);
+        $this->filterBooks($search, $qb);
         return $qb->getQuery();
     }
 
@@ -82,6 +87,7 @@ class ReservationRepository extends ServiceEntityRepository
             ->groupBy('status');
 
         $this->joinUser($userId, $qb);
+        $this->reservedBooks($qb);
 
         return $qb
             ->getQuery()
@@ -108,8 +114,8 @@ class ReservationRepository extends ServiceEntityRepository
     private function joinUser($userId, QueryBuilder $qb)
     {
         $qb
-            ->join('r.user', 'user')
-            ->where('user.id = :user_id')
+            ->join('r.user', 'u')
+            ->where('u.id = :user_id')
             ->setParameter('user_id', $userId);
     }
 
@@ -117,15 +123,14 @@ class ReservationRepository extends ServiceEntityRepository
     {
         if (!empty($search)) {
             $qb
-                ->where('r.createdAt LIKE :search')
-                ->orWhere('r.updatedAt LIKE :search')
-                ->orWhere('r.endBorrowingDate LIKE :search')
-                ->orWhere('r.startBorrowingDate LIKE :search')
-                ->orWhere('r.borrowedQuantity LIKE :search')
-                ->orWhere('r.status LIKE :search')
-                ->orWhere('r.requestedQuantity LIKE :search')
-                ->orWhere('r.section LIKE :search')
-                ->setParameter('search', "%{$search}%");
+                ->andWhere('r.createdAt LIKE :search_reservation')
+                ->orWhere('r.updatedAt LIKE :search_reservation')
+                ->orWhere('r.endBorrowingDate LIKE :search_reservation')
+                ->orWhere('r.startBorrowingDate LIKE :search_reservation')
+                ->orWhere('r.borrowedQuantity LIKE :search_reservation')
+                ->orWhere('r.status LIKE :search_reservation')
+                ->orWhere('r.requestedQuantity LIKE :search_reservation')
+                ->setParameter('search_reservation', "%{$search}%");
         }
     }
 
@@ -133,13 +138,13 @@ class ReservationRepository extends ServiceEntityRepository
     {
         if (!empty($search)) {
             $qb
-                ->where('u.username LIKE :search')
-                ->orWhere('u.email LIKE :search')
-                ->orWhere('u.address LIKE :search')
-                ->orWhere('u.firstName LIKE :search')
-                ->orWhere('u.lastName LIKE :search')
-                ->orWhere('u.phoneNumber LIKE :search')
-                ->setParameter('search', "%{$search}%");
+                ->orWhere('u.username LIKE :search_user')
+                ->orWhere('u.email LIKE :search_user')
+                ->orWhere('u.address LIKE :search_user')
+                ->orWhere('u.firstName LIKE :search_user')
+                ->orWhere('u.lastName LIKE :search_user')
+                ->orWhere('u.phoneNumber LIKE :search_user')
+                ->setParameter('search_user', "%{$search}%");
         }
     }
 
@@ -147,15 +152,15 @@ class ReservationRepository extends ServiceEntityRepository
     {
         if (!empty($search)) {
             $qb
-                ->where('ca.code LIKE :search')
-                ->orWhere('ca.title LIKE :search')
-                ->orWhere('book.description LIKE :search')
-                ->orWhere('book.isbn LIKE :search')
-                ->orWhere('book.title LIKE :search')
-                ->orWhere('book.publishDate LIKE :search')
-                ->orWhere('book.author LIKE :search')
-                ->orWhere('book.section LIKE :search')
-                ->setParameter('search', "%{$search}%");
+                ->orWhere('ca.code LIKE :search_book')
+                ->orWhere('ca.title LIKE :search_book')
+                ->orWhere('book.description LIKE :search_book')
+                ->orWhere('book.isbn LIKE :search_book')
+                ->orWhere('book.title LIKE :search_book')
+                ->orWhere('book.publishDate LIKE :search_book')
+                ->orWhere('book.author LIKE :search_book')
+                ->orWhere('book.section LIKE :search_book')
+                ->setParameter('search_book', "%{$search}%");
         }
     }
 }

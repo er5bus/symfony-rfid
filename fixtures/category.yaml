@@ -1,0 +1,4 @@
+App\Entity\Category:
+  category{0..20}:
+    title (unique): <writingGenre()>
+    code (unique): <ean8()>

@@ -37,7 +37,7 @@ class BookShopController extends Controller
             ->paginate(
                 $bookRepository->getFindAllQuery($request->query->get('search', null)),
                 $request->query->getInt('page', 1), /*page number*/
-                10 /*limit per page*/
+                9 /*limit per page*/
         );
 
         // parameters to template
@@ -108,7 +108,7 @@ class BookShopController extends Controller
 
         return $this->json([
             'success' => false,
-            'msg' => $this->trans('Your request is not verified. Plz refresh the page and try again.')
+            'msg' => $this->trans('Your request is not verified. Refresh the page and try again.')
         ]);
     }
 
@@ -124,7 +124,7 @@ class BookShopController extends Controller
         $user = $this->getUser();
 
         $reservations = $this->getKnpPaginator()->paginate(
-            $reservationRepository->getFindByUserQuery($user->getId()),
+            $reservationRepository->findByUserQuery($user->getId(), $request->query->get('search', null)),
             $request->query->getInt('page', 1), /*page number*/
             10 /*limit per page*/
         );

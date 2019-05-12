@@ -13,9 +13,9 @@
         <div class="col-lg-12">
             <div class="row row-grid">
                 {% for item in books %}
-                        <div class="col-lg-4">
-                            <div class="card bg-secondary card-lift--hover shadow">
-                                <div class="card-header bg-white border-2 card-header-height-medium" style="background-image: url({{ vich_uploader_asset(item.book, 'coverFile')|default(asset('assets/img/icons/reading.svg')) }});">
+                        <div class="col-lg-4 pb-4">
+                            <div class="card bg-secondary shadow">
+                                <div class="card-header bg-white border-2 card-header-height-medium" style="background-image: url({{ vich_uploader_asset(item.book, 'coverFile')|default(asset('assets/img/icons/no-cover.png')) }});">
                                     <div class="row">
                                         <div class="col">
                                             <div class="float-left pt-2 pl-2">
@@ -33,16 +33,16 @@
 {#                                <div class="row">#}
 {#                                    <div class="col">#}
 {#                                        <div class="card-img-top pt-2">#}
-{#                                            <img  src="{{ vich_uploader_asset(item.book, 'coverFile')|default(asset('assets/img/icons/reading.svg')) }}"#}
+{#                                            <img  src="{{ vich_uploader_asset(item.book, 'coverFile')|default(asset('assets/img/icons/no-cover.png')) }}"#}
 {#                                                 class="img-center card-book-cover" alt="">#}
 {#                                        </div>#}
 {#                                    </div>#}
 {#                                </div>#}
 
-                                <div class="card-body text-center plr-5">
+                                <div class="card-body plr-5">
                                     <div class="pb-2">
                                         <h4 class="mb-0 text-sm text-blue">{{ 'Book title'|trans }}</h4>
-                                        <p class="text-sm mb-0">{{ item.book.title }}</p>
+                                        <p class="text-sm mb-0">{{ item.book.title|truncate(40) }}</p>
                                     </div>
 
 {#                                    <div class="pb-2">#}
@@ -52,7 +52,7 @@
 
                                     <div class="pb-2">
                                         <h4 class="mb-0 text-sm text-blue">{{ 'Description'|trans }}</h4>
-                                        <p class="text-sm mb-0">{{ item.book.description }}</p>
+                                        <p class="text-sm mb-0">{{ item.book.description|truncate(40) }}</p>
                                     </div>
 
 {#                                    <div class="pb-2">#}
@@ -96,7 +96,7 @@
             </div>
 
             {# display navigation #}
-            <div aria-label="Page navigation example">
+            <div class="float-right pt-4 pb-4" aria-label="Page navigation example">
                 {{ knp_pagination_render(books) }}
             </div>
         </div>

@@ -1,0 +1,10 @@
+App\Entity\Book:
+  book{0..50}:
+    title (unique): <bookNames()>
+    description: <realText(500)>
+    author: <authorName()>
+    publishDate: <dateTimeBetween()>
+    quantity: <numberBetween(10, 100)>
+    section: <sentence()>
+    isbn: <isbn13()>
+    category: '@category*'

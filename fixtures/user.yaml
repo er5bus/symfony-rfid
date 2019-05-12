@@ -1,0 +1,36 @@
+App\Entity\User:
+  admin:
+    firstName: <firstName()>
+    lastName: <lastName()>
+    birthday: <dateTimeThisCentury()>
+    address: <address()>
+    phoneNumber: <phoneNumber()>
+    username: admin
+    plainPassword: admin
+    email: admin@example.com
+    roles: [ROLE_SUPER_ADMIN]
+    enabled: true
+
+  librarian{0..50}:
+    firstName: <firstName()>
+    lastName: <lastName()>
+    birthday: <dateTimeThisCentury()>
+    address: <address()>
+    phoneNumber (unique): <phoneNumber()>
+    username (unique): <username()>
+    plainPassword: 123456
+    email (unique): <email()>
+    roles: [ROLE_LIBRARIAN]
+    enabled: true
+
+  user{0..50}:
+    firstName: <firstName()>
+    lastName: <lastName()>
+    birthday: <dateTimeThisCentury()>
+    address: <address()>
+    phoneNumber (unique): <phoneNumber()>
+    username (unique): <username()>
+    plainPassword: 123456
+    email (unique): <email()>
+    roles: [ROLE_USER]
+    enabled: true

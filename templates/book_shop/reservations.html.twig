@@ -3,11 +3,24 @@
 {% block body %}
     <div class="row">
         <div class="col">
-            <div class="card bg-secondary shadow">
+            <div class="card shadow">
                 <div class="card-header border-0">
                     <h3 class="mb-0">{{ 'My reservation'|trans }}</h3>
                 </div>
                 <div class="table-responsive">
+                    <form action="{{ path('user_reservation') }}" method="get">
+                        <div class="col-4 pt-4 float-right">
+                            <div class="form-group">
+                                <div class="input-group mb-4">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
+                                    </div>
+                                    <input class="form-control" autocomplete="off" name="search" placeholder="{{ 'Search'|trans }}"
+                                           type="text" value="{{ app.request.get('search', null) }}">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                     <table class="table align-items-center table-flush">
                         <thead class="thead-light">
                         <tr>
@@ -25,12 +38,12 @@
                                     <div class="media align-items-center">
                                         <a href="#" class="avatar rounded-circle mr-3">
                                             <img alt="Image placeholder" width="200"
-                                                 src="{{ vich_uploader_asset(reservation.book, 'coverFile')|default(asset('assets/img/icons/reading.svg')) }}">
+                                                 src="{{ vich_uploader_asset(reservation.book, 'coverFile')|default(asset('assets/img/icons/no-cover.png')) }}">
                                         </a>
                                         <div class="media-body">
                                             <a class="text-darker" href="{{ path('book_shop_show', {'id': reservation.book.id}) }}">
-                                                <span class="mb-0 text-sm">{{ reservation.book.title }}</span>
-                                                <p class="mb-0 text-sm">{{ reservation.book.description }}</p>
+                                                <span class="mb-0 text-sm">{{ reservation.book.title|truncate(20) }}</span>
+                                                <p class="mb-0 text-sm">{{ reservation.book.description|truncate(20) }}</p>
                                             </a>
 
                                         </div>

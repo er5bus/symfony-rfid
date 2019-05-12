@@ -24,7 +24,7 @@
                                             <h4 class="mb-0 text-sm">{{ reservation.status|trans|capitalize }}</h4>
                                         </div>
                                     </div>
-                                    <p class="text-sm mb-0">{{ reservation.reservedBooks }} {{ 'Book'|trans }}</p>
+                                    <p class="text-sm mb-0">{{ reservation.reservedBooks|default('---') }} {{ 'Book'|trans }}</p>
                                 </div>
                             </div>
                         {% else %}

@@ -1,0 +1,11 @@
+App\Entity\Reservation:
+  reservation{0..50}:
+    createdAt: <dateTimeBetween('-30 years', '+30 years')>
+    updatedAt: <dateTimeBetween('-30 years', '+30 years')>
+    startBorrowingDate: <dateTimeBetween('-30 years', 'now')>
+    endBorrowingDate: <dateTimeBetween('now', '+30 years')>
+    requestedQuantity: <numberBetween(10, 100)>
+    borrowedQuantity: <numberBetween(1, 10)>
+    status: <reservationStatus()>
+    book: '@book*'
+    user: '@user*'

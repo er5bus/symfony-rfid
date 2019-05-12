@@ -43,7 +43,7 @@ class Book
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @var string
      */
     private $cover;
@@ -55,7 +55,7 @@ class Book
     private $coverFile;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      * @var DateTime
      */
     private $updatedAt;
@@ -71,6 +71,11 @@ class Book
     private $section;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $isbn;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="books")
      */
     private $category;
@@ -79,11 +84,6 @@ class Book
      * @ORM\OneToMany(targetEntity="App\Entity\Reservation", mappedBy="book")
      */
     private $reservations;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $isbn;
 
     public function __construct()
     {
@@ -155,14 +155,18 @@ class Book
         return $this;
     }
 
-    public function setCoverFile(File $image = null)
+    public function setCoverFile($image = null)
     {
-        $this->coverFile = $image;
+        if (is_string($image)){
+            $this->coverFile = new File($image);
+        }else{
+            $this->coverFile = $image;
+        }
 
         // VERY IMPORTANT:
         // It is required that at least one field changes if you are using Doctrine,
         // otherwise the event listeners won't be called and the file is lost
-        if ($image) {
+        if ($this->coverFile) {
             // if 'updatedAt' is not defined in your entity, use another property
             $this->updatedAt = new DateTime('now');
         }

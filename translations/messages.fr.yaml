@@ -95,6 +95,7 @@ Author: __Author
 'In stock': '__In stock'
 'Delete Book': '__Delete Book'
 'No file selected': '__No file selected'
+'Book Details': 'messages'
 
 'New book has been created successfully': ''
 'The book has been updated successfully': ''
@@ -110,4 +111,5 @@ Author: __Author
 'The reservation can not be deleted': ''
 'New user has been created successfully': ''
 'The user has been updated successfully': ''
-Book Details: 'messages'
+'Your request has been verified and awaiting approval':
+'Your request is not verified. Refresh the page and try again.':

@@ -4,7 +4,6 @@
 
 {% block stylesheets %}
     {{ parent() }}
-
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/css/alertify.min.css"/>
     <!-- Default theme -->
@@ -15,7 +14,7 @@
     <div class="row">
         <div class="col-md-4">
             <div class="card shadow">
-                <img class="card-img-top" alt="Image placeholder" src="{{ vich_uploader_asset(book, 'coverFile')|default(asset('assets/img/icons/reading.svg')) }}">
+                <img class="card-img-top" alt="Image placeholder" src="{{ vich_uploader_asset(book, 'coverFile')|default(asset('assets/img/icons/no-cover.png')) }}">
             </div>
         </div>
         <div class="col-md-8">
@@ -35,7 +34,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row pt-2 pb-2">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <i class="ni ni-book-bookmark"></i>
@@ -50,10 +49,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                    </div>
+                    <div class="row pt-2 pb-2">
+                        <div class="col-md-12">
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <i class="ni ni-book-bookmark"></i>
+                                    <i class="ni ni-bag-17"></i>
                                 </div>
                                 <div class="col ml--2">
                                     <div class="d-flex justify-content-between align-items-center">

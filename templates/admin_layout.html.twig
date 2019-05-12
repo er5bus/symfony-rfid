@@ -16,6 +16,10 @@
         <!-- Icons -->
         <link href="{{ asset('assets/vendor/nucleo/css/nucleo.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+        <!-- Alertify CSS -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/css/alertify.min.css"/>
+        <!-- Alertify Default theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/css/themes/default.min.css"/>
         <!-- Argon CSS -->
         <link type="text/css" href="{{ asset('assets/css/argon.css') }}" rel="stylesheet">
     {% endblock %}
@@ -175,7 +179,7 @@
 
     <!-- Optional JS -->
     <script src="{{ asset('assets/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/alertify.min.js"></script>
 
     <script>
         // Add the following code if you want the name of the file appear on select
@@ -183,8 +187,6 @@
             var fileName = $(this).val().split("\\").pop();
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
         });
-
-
     </script>
 
     <!-- BEGIN FLASH MSG -->
@@ -192,21 +194,12 @@
         {% for message in messages %}
         <script>
             $(document).ready(function () {
-
-                $.notify({
-                    // options
-                    icon: 'ni ni-bell-55',
-                    message: '{{ message }}'
-                },{
-                    // settings
-                    type: '{{ type }}'
-                });
+                alertify.notify('{{ message }}', '{{ type }}', 5);
             });
         </script>
         {% endfor %}
     {% endfor %}
     <!-- END FLASH MSG -->
-
 
     <!-- Argon JS -->
     <script src="{{ asset('assets/js/argon.js') }}"></script>
