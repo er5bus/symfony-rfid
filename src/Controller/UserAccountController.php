@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_LIBRARIAN')")
  */
-class UserAccountManager extends Controller
+class UserAccountController extends Controller
 {
     use ControllerTrait;
 

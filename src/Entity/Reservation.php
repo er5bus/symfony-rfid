@@ -46,17 +46,17 @@ class Reservation
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $borrowingQuantity;
+    private $requestedQuantity;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $borrowedQuantity;
 
     /**
      * @ORM\Column(name="book_status", type="string", length=255, nullable=true)
      */
     private $status;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $requestedQuantity;
 
     /**
      * @var Book
@@ -65,9 +65,20 @@ class Reservation
     private $book;
 
     /**
+     * @var User
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="reservations")
      */
     private $user;
+
+    /**
+     * Reservation constructor.
+     */
+    public function __construct()
+    {
+        $this->requestedQuantity = 1;
+        $this->endBorrowingDate = new DateTime('+ 1 month');
+        $this->startBorrowingDate = new DateTime('now');
+    }
 
     /**
      * @ORM\PrePersist()
@@ -90,14 +101,14 @@ class Reservation
         return $this->id;
     }
 
-    public function getBorrowingQuantity(): ?int
+    public function getborrowedQuantity(): ?int
     {
-        return $this->borrowingQuantity;
+        return $this->borrowedQuantity;
     }
 
-    public function setBorrowingQuantity(?int $borrowingQuantity): self
+    public function setborrowedQuantity(?int $borrowedQuantity): self
     {
-        $this->borrowingQuantity = $borrowingQuantity;
+        $this->borrowedQuantity = $borrowedQuantity;
 
         return $this;
     }
@@ -175,7 +186,7 @@ class Reservation
     }
 
     /**
-     * @return mixed
+     * @return DateTime
      */
     public function getStartBorrowingDate()
     {

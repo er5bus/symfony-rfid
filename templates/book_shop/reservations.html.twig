@@ -3,7 +3,7 @@
 {% block body %}
     <div class="row">
         <div class="col">
-            <div class="card shadow">
+            <div class="card bg-secondary shadow">
                 <div class="card-header border-0">
                     <h3 class="mb-0">{{ 'My reservation'|trans }}</h3>
                 </div>
@@ -11,12 +11,11 @@
                     <table class="table align-items-center table-flush">
                         <thead class="thead-light">
                         <tr>
-                            <th scope="col">{{ 'Requested Book'|trans }}</th>
-                            <th scope="col">{{ 'Requested Quantity'|trans }}</th>
-                            <th scope="col">{{ 'Start Borrowing Date'|trans }}</th>
-                            <th scope="col">{{ 'End Borrowing Date'|trans }}</th>
-                            <th scope="col">{{ 'Borrowing Quantity'|trans }}</th>
-                            <th scope="col">{{ 'Status'|trans }}</th>
+                            <th scope="col">{{ knp_pagination_sortable(reservations, 'Requested Book'|trans, 'book.title') }}</th>
+                            <th scope="col">{{ knp_pagination_sortable(reservations, 'Borrowing Date'|trans, 'r.startBorrowingDate') }}</th>
+                            <th scope="col">{{ knp_pagination_sortable(reservations, 'Requested Quantity'|trans, 'r.requestedQuantity') }}</th>
+                            <th scope="col">{{ knp_pagination_sortable(reservations, 'Borrowed Quantity'|trans, 'r.borrowedQuantity') }}</th>
+                            <th scope="col">{{ knp_pagination_sortable(reservations, 'Status'|trans, 'c.status') }}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -25,42 +24,43 @@
                                 <th scope="row">
                                     <div class="media align-items-center">
                                         <a href="#" class="avatar rounded-circle mr-3">
-                                            <img alt="Image placeholder" src="{{ vich_uploader_asset(reservation.book, 'coverFile')|default(asset('assets/img/icons/reading.svg')) }}">
+                                            <img alt="Image placeholder" width="200"
+                                                 src="{{ vich_uploader_asset(reservation.book, 'coverFile')|default(asset('assets/img/icons/reading.svg')) }}">
                                         </a>
                                         <div class="media-body">
-                                            <span class="mb-0 text-sm">{{ reservation.book.title }}</span>
-                                            <p class="mb-0 text-sm">{{ reservation.book.description }}</p>
+                                            <a class="text-darker" href="{{ path('book_shop_show', {'id': reservation.book.id}) }}">
+                                                <span class="mb-0 text-sm">{{ reservation.book.title }}</span>
+                                                <p class="mb-0 text-sm">{{ reservation.book.description }}</p>
+                                            </a>
+
                                         </div>
                                     </div>
                                 </th>
                                 <td>
+                                    <span class="text-sm">
+                                    <i class="far fa-calendar-alt"></i>
+                                    {{ reservation.startBorrowingDate ? reservation.startBorrowingDate|date('Y-m-d') : '---' }}
+                                    </span>
+                                    <i class="fas fa-arrow-right"></i>
+                                    <span class="text-sm">
+                                        <i class="far fa-calendar-alt"></i>
+                                        {{ reservation.endBorrowingDate ? reservation.endBorrowingDate|date('Y-m-d') : '---' }}
+                                    </span>
+                                </td>
+                                <td>
                                     {{ reservation.requestedQuantity }} {{ 'Book'|trans }}
                                 </td>
                                 <td>
-                                    {% if reservation.startBorrowingDate is null %}
-                                         ---
-                                    {% else %}
-                                        {{ reservation.startBorrowingDate|date('m/d/Y') }}
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if reservation.endBorrowingDate is null %}
+                                    {% if reservation.borrowedQuantity is null %}
                                         ---
                                     {% else %}
-                                        {{ reservation.endBorrowingDate|date('m/d/Y') }}
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if reservation.borrowingQuantity is null %}
-                                        ---
-                                    {% else %}
-                                        {{ reservation.borrowingQuantity }} {{ 'Book'|trans }}
+                                        {{ reservation.borrowedQuantity }} {{ 'Book'|trans }}
                                     {% endif %}
                                 </td>
                                 <td>
                                   <span class="badge badge-md badge-dot mr-4">
                                       {% if reservation.status is constant('App\\Entity\\Reservation::IN_PENDING') %}
-                                            <span class="badge badge-info"> {{ reservation.status|trans }} </span>
+                                          <span class="badge badge-info"> {{ reservation.status|trans }} </span>
                                       {% elseif reservation.status is constant('App\\Entity\\Reservation::REFUSED') %}
                                           <span class="badge badge-danger"> {{ reservation.status|trans }} </span>
                                       {% else %}
@@ -70,7 +70,7 @@
                                 </td>
                             </tr>
 
-                            {% else %}
+                        {% else %}
                             <tr>
                                 <td colspan="6" class="text-center">{{ 'No records found'|trans }}</td>
                             </tr>

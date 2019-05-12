@@ -19,7 +19,7 @@
     </div>
 
     <div class="card shadow">
-        <div class="card-header border-2">
+        <div class="card-header border-0">
             <div class="row align-items-center">
                 <div class="col">
                     <h3 class="mb-0">{{ 'Reservations'|trans }}</h3>
@@ -47,7 +47,7 @@
                     <tr>
                         <th scope="col">{{ knp_pagination_sortable(reservations, 'Book'|trans, 'book.title') }}</th>
                         <th scope="col">{{ knp_pagination_sortable(reservations, 'Borrowing Date'|trans, 'r.startBorrowingDate') }}</th>
-                        <th scope="col">{{ knp_pagination_sortable(reservations, 'Borrowed Quantity'|trans, 'r.borrowingQuantity') }}</th>
+                        <th scope="col">{{ knp_pagination_sortable(reservations, 'Borrowed Quantity'|trans, 'r.borrowedQuantity') }}</th>
                         <th scope="col">{{ knp_pagination_sortable(reservations, 'Status'|trans, 'c.status') }}</th>
                         <th scope="col">{{ 'Actions'|trans }}</th>
                     </tr>
@@ -78,7 +78,7 @@
                                     {{ reservation.endBorrowingDate ? reservation.endBorrowingDate|date('Y-m-d') : '---' }}
                                 </span>
                             </td>
-                            <td>{{ reservation.borrowingQuantity|default('---') }} {{ 'Book'|trans }}</td>
+                            <td>{{ reservation.borrowedQuantity|default('---') }} {{ 'Book'|trans }}</td>
                             <td><span class="badge badge-info">{{ reservation.status }}</span></td>
                             <td>
                                 <a class="btn btn-sm btn-icon-only btn-2 btn-primary" role="button"

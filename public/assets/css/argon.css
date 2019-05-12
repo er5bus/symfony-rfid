@@ -15379,8 +15379,12 @@ a.text-lighter:focus {
 
 .avatar img {
     width: 100%;
-
+    height: inherit;
     border-radius: 50%;
+}
+
+.avatar img {
+    height: -webkit-fill-available;
 }
 
 .avatar + .avatar-content {
@@ -16055,6 +16059,23 @@ a.btn-icon-only {
 .echart-extra-large{
     min-height: 30rem;
 }
+
+.card-badge-primary {
+    color: #ffffff;
+    background-color: rgb(48, 75, 232);
+}
+
+.card-header-height-medium{
+    background-size: initial;
+    background-repeat-x: no-repeat;
+    background-repeat-y: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 15rem;
+}
+
 
 .card-book-cover:hover {
     max-width: 180px;

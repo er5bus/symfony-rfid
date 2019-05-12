@@ -30,6 +30,7 @@
         "vich/uploader-bundle": "^1.9"
     },
     "require-dev": {
+        "hautelook/alice-bundle": "^2.5",
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.0",
         "symfony/profiler-pack": "*",

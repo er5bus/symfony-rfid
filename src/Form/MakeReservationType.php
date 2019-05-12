@@ -5,31 +5,18 @@ namespace App\Form;
 use App\Entity\Book;
 use App\Entity\Reservation;
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Form\Type\HiddenEntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class ReservationType extends AbstractType
+class MakeReservationType extends AbstractType
 {
-    /** @var EntityManagerInterface */
-    private $_em;
-
-    /**
-     * ReservationType constructor.
-     * @param EntityManagerInterface $_em
-     */
-    public function __construct(EntityManagerInterface $_em)
-    {
-        $this->_em = $_em;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -57,31 +44,11 @@ class ReservationType extends AbstractType
                 'attr' => ['class' => 'js-datepicker'],
                 'label' => 'End Borrowing Date'
             ])
-            ->add('borrowedQuantity', IntegerType::class, [
-                'label' => 'Borrowed Quantity',
+            ->add('status', HiddenType::class, [
+                'data' => Reservation::IN_PENDING,
                 'constraints' => [
-                    new Assert\NotNull(),
-                    new Assert\Type(['type' => 'integer']),
-                    new Assert\GreaterThanOrEqual(['value' => 1])
+                    new Assert\EqualTo(['value' => Reservation::IN_PENDING])
                 ],
-            ])
-            ->add('status', ChoiceType::class, [
-                'label' => 'Status',
-                'constraints' => [
-                    new Assert\NotNull(),
-                    new Assert\Choice([
-                        Reservation::FULLY_ACCEPTED,
-                        Reservation::PARTIALLY_ACCEPTED,
-                        Reservation::IN_PENDING,
-                        Reservation::REFUSED
-                    ]),
-                ],
-                'choices' => [
-                    Reservation::FULLY_ACCEPTED => Reservation::FULLY_ACCEPTED,
-                    Reservation::PARTIALLY_ACCEPTED => Reservation::PARTIALLY_ACCEPTED,
-                    Reservation::IN_PENDING => Reservation::IN_PENDING,
-                    Reservation::REFUSED => Reservation::REFUSED
-                ]
             ])
             ->add('requestedQuantity', IntegerType::class, [
                 'label' => 'Requested Quantity',
@@ -91,40 +58,35 @@ class ReservationType extends AbstractType
                     new Assert\GreaterThanOrEqual(['value' => 1])
                 ],
             ])
-            ->add('book', EntityType::class, [
-                'class' => Book::class,
-                'choice_label' => 'title',
-                'constraints' => [
-                    new Assert\NotNull()
-                ],
+            ->add('book', HiddenEntityType::class, [
+                'class' => Book::class
             ])
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'username',
-                'constraints' => [
-                    new Assert\NotNull()
-                ],
+            ->add('user', HiddenEntityType::class, [
+                'class' => User::class
             ]);
     }
 
     /**
      * @param Reservation $value
      * @param ExecutionContextInterface $context
+     * @throws \Exception
      */
     public function validateInterval($value, ExecutionContextInterface $context)
     {
-        if (!is_null($value->getBook()) && !is_null($value->getborrowedQuantity())) {
+        if (!is_null($value->getStartBorrowingDate()) && !is_null($value->getEndBorrowingDate())) {
 
-            $reservedBooks = $this->_em->getRepository(Reservation::class)
-                ->findByBook($value->getBook()->getId());
+            if ($value->getStartBorrowingDate()->diff(new \DateTime('now'))->format('%a') > 0) {
+                $context
+                    ->buildViolation('This value is not a valid date.')
+                    ->atPath('startBorrowingDate')
+                    ->addViolation();
+            }
 
-            $limit = $reservedBooks['quantity'] - $reservedBooks['borrowedQuantity'];
-
-            if ($limit < $value->getborrowedQuantity()) {
+            if ($value->getStartBorrowingDate() > $value->getEndBorrowingDate()) {
                 $context
                     ->buildViolation('This value should be {{ limit }} or less.')
-                    ->setParameter('{{ limit }}', $limit)
-                    ->atPath('borrowedQuantity')
+                    ->setParameter('{{ limit }}', $value->getStartBorrowingDate()->format('m/d/Y'))
+                    ->atPath('startBorrowingDate')
                     ->addViolation();
             }
         }

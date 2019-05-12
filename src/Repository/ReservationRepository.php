@@ -37,7 +37,7 @@ class ReservationRepository extends ServiceEntityRepository
     public function findByBook($bookId)
     {
         $qb = $this->createQueryBuilder('r')
-            ->select('SUM(r.borrowingQuantity) as borrowedQuantity')
+            ->select('SUM(r.borrowedQuantity) as borrowedQuantity')
             ->addSelect('book.quantity as quantity');
 
         $this->joinBook($bookId, $qb);
@@ -48,7 +48,9 @@ class ReservationRepository extends ServiceEntityRepository
 
     public function getFindByUserQuery($userId)
     {
-        $qb = $this->createQueryBuilder('r');
+        $qb = $this->createQueryBuilder('r')
+            ->addSelect('book')
+            ->join('r.book', 'book');
         $this->joinUser($userId, $qb);
         return $qb->getQuery();
     }
@@ -56,7 +58,7 @@ class ReservationRepository extends ServiceEntityRepository
     public function countAllReservations()
     {
         return $this->createQueryBuilder('r')
-            ->select('SUM(r.borrowingQuantity) as total')
+            ->select('SUM(r.borrowedQuantity) as total')
             ->getQuery()
             ->getSingleResult();
     }
@@ -64,7 +66,7 @@ class ReservationRepository extends ServiceEntityRepository
     public function reservationStats()
     {
         $qb = $this->createQueryBuilder('r')
-            ->select('SUM(r.borrowingQuantity) as borrowedQuantity', 'r.createdAt as createdAt');
+            ->select('SUM(r.borrowedQuantity) as borrowedQuantity', 'r.createdAt as createdAt');
 
         $this->reservedBooks($qb);
 
@@ -76,7 +78,7 @@ class ReservationRepository extends ServiceEntityRepository
     public function getUserReservationGroupedByStatus($userId)
     {
         $qb = $this->createQueryBuilder('r')
-            ->select('SUM(r.borrowingQuantity) as reservedBooks', 'r.status as status')
+            ->select('SUM(r.borrowedQuantity) as reservedBooks', 'r.status as status')
             ->groupBy('status');
 
         $this->joinUser($userId, $qb);
@@ -119,7 +121,7 @@ class ReservationRepository extends ServiceEntityRepository
                 ->orWhere('r.updatedAt LIKE :search')
                 ->orWhere('r.endBorrowingDate LIKE :search')
                 ->orWhere('r.startBorrowingDate LIKE :search')
-                ->orWhere('r.borrowingQuantity LIKE :search')
+                ->orWhere('r.borrowedQuantity LIKE :search')
                 ->orWhere('r.status LIKE :search')
                 ->orWhere('r.requestedQuantity LIKE :search')
                 ->orWhere('r.section LIKE :search')

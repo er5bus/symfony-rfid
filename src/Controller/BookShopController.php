@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Controller\Traits\ControllerTrait;
+use App\Entity\Book;
 use App\Entity\Reservation;
+use App\Form\MakeReservationType;
 use App\Repository\BookRepository;
 use App\Repository\ReservationRepository;
 use DateTime;
@@ -39,43 +41,61 @@ class BookShopController extends Controller
         );
 
         // parameters to template
-        return $this->render('book_shop/index.html.twig', array('books' => $books));
+        return $this->render('book_shop/book_index.html.twig', array('books' => $books));
+    }
+
+    /**
+     * @Route("/book/details/{id}", name="book_shop_show", methods={"GET"})
+     * @param Book $book
+     * @return Response
+     */
+    public function show(Book $book): Response
+    {
+        $reservedBooks = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(Reservation::class)
+            ->findByBook($book->getId());
+
+        $inStock = $reservedBooks['quantity'] - $reservedBooks['borrowedQuantity'];
+
+        return $this->render('book_shop/book_show.html.twig', [
+            'book' => $book,
+            'in_stock' => $inStock
+        ]);
+    }
+
+    public function renderMakeReservationType(book $book)
+    {
+        $reservation = (new Reservation())
+            ->setBook($book)
+            ->setUser($this->getUser())
+        ;
+
+        $form = $this->createForm(MakeReservationType::class, $reservation, [
+            'action' => $this->generateUrl('user_make_reservation')
+        ]);
+
+        return $this->render('book_shop/_reservation_form.html.twig', [
+            'book' => $book,
+            'form' => $form->createView()
+        ]);
     }
 
     /**
      * @Route("/make/reservation", name="user_make_reservation", methods={"POST"})
      * @param Request $request
-     * @param BookRepository $bookRepository
      * @return Response
      * @throws Exception
      */
-    public function makeReservation(Request $request, BookRepository $bookRepository): Response
+    public function makeReservation(Request $request): Response
     {
-        $bookId = $request->request->get('book', null);
-        $token = $request->request->get('_token', null);
-        $quantity = $request->request->getInt('quantity', null);
-        $startBorrowingDate = $request->request->get('start_borrowing_date', null);
-        $endBorrowingDate = $request->request->get('end_borrowing_date');
+        $reservation = new Reservation();
+        $form = $this->createForm(MakeReservationType::class, $reservation, [
+            'action' => $this->generateUrl('user_make_reservation')
+        ]);
+        $form->handleRequest($request);
 
-        if (!$this->isCsrfTokenValid('make_reservation'.$bookId, $token)) {
-            throw new AccessDeniedException('The CSRF token is invalid.');
-        }
-
-        $book = $bookRepository->find($bookId);
-        if (
-            !is_null($book) &&
-            ($quantity > 0 && $quantity < $book->getQuantity()) &&
-            $this->validateDate($startBorrowingDate) &&
-            $this->validateDate($startBorrowingDate)
-        ){
-            $reservation = new Reservation();
-            $reservation->setBook($book);
-            $reservation->setRequestedQuantity($quantity);
-            $reservation->setStartBorrowingDate(DateTime::createFromFormat('m/d/Y', $startBorrowingDate));
-            $reservation->setEndBorrowingDate(DateTime::createFromFormat('m/d/Y', $endBorrowingDate));
-            $reservation->setCreatedAt(new DateTime('now'));
-            $reservation->setStatus(Reservation::IN_PENDING);
-            $reservation->setUser($this->getUser());
+        if ($form->isSubmitted() && $form->isValid()){
 
             $this->getDoctrine()->getManager()->persist($reservation);
             $this->getDoctrine()->getManager()->flush();

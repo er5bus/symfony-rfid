@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Security("is_granted('ROLE_USER')")
  */
-class ClientAccountManager extends Controller
+class ClientAccountController extends Controller
 {
     use ControllerTrait;
 

@@ -51,7 +51,7 @@ class BookRepository extends ServiceEntityRepository
     {
         $qb
             ->addSelect(sprintf(
-                "(SELECT SUM(r.borrowingQuantity)
+                "(SELECT SUM(r.borrowedQuantity)
             FROM %s as r
             WHERE r MEMBER OF c.reservations 
             AND :now BETWEEN r.startBorrowingDate AND r.endBorrowingDate
